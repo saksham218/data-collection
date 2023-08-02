@@ -54,7 +54,15 @@ const AudioRecorder = () => {
             //creates a blob file from the audiochunks data
             const audioBlob = new Blob(audioChunks, { type: mimeType });
             //creates a playable URL from the blob file.
+            console.log("audioBlob", audioBlob)
             const audioUrl = URL.createObjectURL(audioBlob);
+            var reader = new window.FileReader();
+            reader.readAsDataURL(audioBlob);
+            reader.onloadend = function () {
+                var base64data = reader.result;
+                console.log(base64data);
+            };
+            console.log("Audio: ", audioChunks)
             setAudio(audioUrl);
             setAudioChunks([]);
         };

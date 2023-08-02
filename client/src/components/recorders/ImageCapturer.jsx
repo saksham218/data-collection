@@ -1,3 +1,4 @@
+import { Button } from '@mui/material'
 import React, { useState, useCallback, useRef } from 'react'
 import Webcam from 'react-webcam'
 const WebcamComponent = () => <Webcam />
@@ -11,13 +12,14 @@ const Profile = () => {
     const webcamRef = useRef(null)
     const capture = useCallback(() => {
         const pictureSrc = webcamRef.current.getScreenshot()
+        console.log("Image:", pictureSrc)
         setPicture(pictureSrc)
     })
     return (
         <div>
             <h2>Image</h2>
             <div>
-                {picture == '' ? (
+                {picture === '' ? (
                     <Webcam
                         audio={false}
                         height={400}
@@ -31,18 +33,18 @@ const Profile = () => {
                 )}
             </div>
             <div>
-                {picture != '' ? (
-                    <button
+                {picture !== '' ? (
+                    <Button
                         onClick={(e) => {
                             e.preventDefault()
-                            setPicture()
+                            setPicture('')
                         }}
-                        className="btn btn-primary"
+
                     >
                         Retake
-                    </button>
+                    </Button>
                 ) : (
-                    <button
+                    <Button
                         onClick={(e) => {
                             e.preventDefault()
                             capture()
@@ -50,7 +52,7 @@ const Profile = () => {
                         className="btn btn-danger"
                     >
                         Capture
-                    </button>
+                    </Button>
                 )}
             </div>
         </div>
