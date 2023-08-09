@@ -1,10 +1,13 @@
 import React from 'react'
 import { useState, useRef } from "react";
-import { lzjb } from 'lzjb';
+// import { lzjb } from 'lzjb';
+import { Button } from '@mui/material'
+import { Base64String } from '../../utils/base64-string';
+import { b64toBlob } from '../../utils/base64toblob';
 
 const mimeType = "video/webm";
 
-const VideoRecorder = () => {
+const VideoRecorder = ({ setVideoBlob }) => {
     const [permission, setPermission] = useState(false);
     const mediaRecorder = useRef(null);
     const liveVideoFeed = useRef(null);
@@ -12,7 +15,7 @@ const VideoRecorder = () => {
     const [stream, setStream] = useState(null);
     const [videoChunks, setVideoChunks] = useState([]);
     const [recordedVideo, setRecordedVideo] = useState(null);
-    const [compressedVideo, setCompressedVideo] = useState(null);
+
     const [decompressedVideo, setDecompressedVideo] = useState(null);
 
     const getCameraPermission = async () => {
@@ -78,35 +81,9 @@ const VideoRecorder = () => {
         mediaRecorder.current.onstop = () => {
             console.log("video chunks", videoChunks.length)
             const videoBlob = new Blob(videoChunks, { type: mimeType });
-            console.log("videoBlob", videoBlob)
+            console.log("videoBlob", videoBlob);
+            setVideoBlob(videoBlob);
             const videoUrl = URL.createObjectURL(videoBlob);
-            var reader = new window.FileReader();
-            reader.readAsDataURL(videoBlob);
-            reader.onloadend = () => {
-                var videobase64 = reader.result;
-                console.log("videobase64: ", videobase64);
-                var videoutf8 = Buffer.from(videobase64, 'base64').toString('utf8');
-                console.log("videoutf8: ", videoutf8);
-                var compressedvideo = lzjb.compress(videoutf8, null, 9);
-                console.log("compressedvideo: ", compressedvideo);
-                var compressedvideoutf8 = Buffer.from(compressedvideo).toString('utf8');
-                var compressedvideobase64 = Buffer.from(compressedvideo).toString('base64');
-                console.log("compressedvideobase64: ", compressedvideobase64);
-                var compressedvideoblob = new Blob([compressedvideobase64], { type: mimeType });
-                console.log("compressedvideoblob: ", compressedvideoblob);
-                var compressedvideourl = URL.createObjectURL(compressedvideoblob);
-                setCompressedVideo(compressedvideourl);
-                var decompressedvideo = lzjb.decompress(compressedvideo);
-                console.log("decompressedvideo: ", decompressedvideo);
-                var videodecompressedutf8 = Buffer.from(decompressedvideo).toString('utf8');
-                var videodecompressedbase64 = Buffer.from(videodecompressedutf8).toString('base64');
-                console.log("videodecompressedbase64: ", videodecompressedbase64);
-                var videodecompressedblob = new Blob([videodecompressedbase64], { type: mimeType });
-                console.log("videodecompressedblob: ", videodecompressedblob);
-                var videodecompressedurl = URL.createObjectURL(videodecompressedblob);
-                setDecompressedVideo(videodecompressedurl);
-            };
-            // console.log("Video: ", videoChunks);
             setRecordedVideo(videoUrl);
             setVideoChunks([]);
         };
@@ -145,9 +122,7 @@ const VideoRecorder = () => {
                         <a download href={recordedVideo}>
                             Download Recording
                         </a>
-                        <a download href={compressedVideo}>
-                            compressed Recording
-                        </a>
+
                         <a download href={decompressedVideo}>
                             decompressed Recording
                         </a>
