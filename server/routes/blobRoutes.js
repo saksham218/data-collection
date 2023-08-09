@@ -5,7 +5,7 @@ import { getAllFiles, getFile, uploadSingleFile } from '../controllers/blobContr
 
 const blobRouter = express.Router();
 
-blobRouter.post('/upload', upload.single('file'), uploadSingleFile);
+blobRouter.post('/upload', upload.single('file'), uploadSingleFile); //tested
 
 blobRouter.get('/allFiles', getAllFiles);
 
