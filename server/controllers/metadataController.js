@@ -4,6 +4,7 @@ import Metadata from '../models/metadata.js';
 
 export const postMetadata = async (req, res) => {
     const metadata = req.body;
+    console.log(metadata);
 
     const newMetadata = new Metadata(metadata);
 
