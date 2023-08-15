@@ -9,7 +9,7 @@ const client = axios.create({
     }
 });
 
-export const postMetaData = async (data) => { client.post('/metadata', data) }
-export const postVideo = async (data) => { client.post('/video', data) }
-export const postAudio = async (data) => { client.post('/audio', data) }
-export const postImage = async (data) => { client.post('/image', data) }
+export const postMetaData = async (data) => { client.post('/metadata/upload', data) }
+export const postVideo = async (data) => { client.post('/blob/upload', data) }
+export const postAudio = async (data) => { client.post('/blob/upload', data) }
+export const postImage = async (data) => { client.post('/blob/upload', data) }

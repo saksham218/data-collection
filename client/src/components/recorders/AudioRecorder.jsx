@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 
 const mimeType = "audio/webm";
 
-const AudioRecorder = () => {
+const AudioRecorder = ({ setAudioBlob }) => {
     const [permission, setPermission] = useState(false);
     const mediaRecorder = useRef(null);
     const [recordingStatus, setRecordingStatus] = useState("inactive");
@@ -54,7 +54,8 @@ const AudioRecorder = () => {
             //creates a blob file from the audiochunks data
             const audioBlob = new Blob(audioChunks, { type: mimeType });
             //creates a playable URL from the blob file.
-            console.log("audioBlob", audioBlob)
+            console.log("audioBlob", audioBlob);
+            setAudioBlob(audioBlob);
             const audioUrl = URL.createObjectURL(audioBlob);
             console.log("Audio: ", audioChunks)
             setAudio(audioUrl);

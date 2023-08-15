@@ -16,7 +16,7 @@ const VideoRecorder = ({ setVideoBlob }) => {
     const [videoChunks, setVideoChunks] = useState([]);
     const [recordedVideo, setRecordedVideo] = useState(null);
 
-    const [decompressedVideo, setDecompressedVideo] = useState(null);
+
 
     const getCameraPermission = async () => {
         setRecordedVideo(null);
@@ -123,9 +123,7 @@ const VideoRecorder = ({ setVideoBlob }) => {
                             Download Recording
                         </a>
 
-                        <a download href={decompressedVideo}>
-                            decompressed Recording
-                        </a>
+
                     </div>
                 ) : null}
             </div>

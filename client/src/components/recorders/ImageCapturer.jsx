@@ -7,13 +7,14 @@ const videoConstraints = {
     height: 400,
     facingMode: 'user',
 }
-const Profile = () => {
+const ImageCapturer = ({ setImageBlob }) => {
     const [picture, setPicture] = useState('')
     const webcamRef = useRef(null)
     const capture = useCallback(() => {
         const pictureSrc = webcamRef.current.getScreenshot()
         console.log("Image:", pictureSrc)
         setPicture(pictureSrc)
+        setImageBlob(pictureSrc)
     })
     return (
         <div>
@@ -58,4 +59,4 @@ const Profile = () => {
         </div>
     )
 }
-export default Profile
+export default ImageCapturer

@@ -34,7 +34,7 @@ const Home = () => {
 
 
             <ImageCapturer setImageBlob={setImageBlob} />
-            <VideoRecorder setVideoBlob={setAudioBlob} />
+            <VideoRecorder setVideoBlob={setVideoBlob} />
             <AudioRecorder setAudioBlob={setAudioBlob} />
             <Button variant="contained" color="primary" onClick={submitData}>Submit</Button>
         </div>
