@@ -2,12 +2,12 @@ import React from 'react'
 import { useState, useRef } from "react";
 // import { lzjb } from 'lzjb';
 import { Button } from '@mui/material'
-import { Base64String } from '../../utils/base64-string';
-import { b64toBlob } from '../../utils/base64toblob';
+
+
 
 const mimeType = "video/webm";
 
-const VideoRecorder = ({ setVideoBlob }) => {
+const VideoRecorder = ({ setVideoBlob, setIsVideo }) => {
     const [permission, setPermission] = useState(false);
     const mediaRecorder = useRef(null);
     const liveVideoFeed = useRef(null);
@@ -15,10 +15,14 @@ const VideoRecorder = ({ setVideoBlob }) => {
     const [stream, setStream] = useState(null);
     const [videoChunks, setVideoChunks] = useState([]);
     const [recordedVideo, setRecordedVideo] = useState(null);
+    const [ready, setReady] = useState(false);
 
 
 
     const getCameraPermission = async () => {
+        setVideoBlob(null);
+        setVideoChunks([]);
+        setIsVideo(false);
         setRecordedVideo(null);
         if ("MediaRecorder" in window) {
             try {
@@ -35,6 +39,7 @@ const VideoRecorder = ({ setVideoBlob }) => {
                     videoConstraints
                 );
                 setPermission(true);
+                setReady(true);
                 //combine both audio and video streams
                 const combinedStream = new MediaStream([
                     ...videoStream.getVideoTracks(),
@@ -50,6 +55,7 @@ const VideoRecorder = ({ setVideoBlob }) => {
             alert("The MediaRecorder API is not supported in your browser.");
         }
     };
+
 
     const startRecording = async () => {
         setRecordingStatus("recording");
@@ -69,12 +75,13 @@ const VideoRecorder = ({ setVideoBlob }) => {
 
         console.log("local chunks", localVideoChunks);
         setVideoChunks(localVideoChunks);
-        console.log("set");
+
     };
 
     const stopRecording = () => {
         setPermission(false);
         setRecordingStatus("inactive");
+
         console.log("video chunks", videoChunks.length)
         mediaRecorder.current.stop();
         console.log("video chunks", videoChunks.length)
@@ -82,11 +89,14 @@ const VideoRecorder = ({ setVideoBlob }) => {
             console.log("video chunks", videoChunks.length)
             const videoBlob = new Blob(videoChunks, { type: mimeType });
             console.log("videoBlob", videoBlob);
+            setIsVideo(true);
             setVideoBlob(videoBlob);
             const videoUrl = URL.createObjectURL(videoBlob);
             setRecordedVideo(videoUrl);
             setVideoChunks([]);
+
         };
+
     };
 
     return (
@@ -95,19 +105,17 @@ const VideoRecorder = ({ setVideoBlob }) => {
             <main>
                 <div className="video-controls">
                     {!permission ? (
-                        <button onClick={getCameraPermission} type="button">
-                            Get Camera
-                        </button>
+                        <Button onClick={getCameraPermission} type="button">
+                            {ready ? "Retake" : "Get Camera"}
+                        </Button>
                     ) : null}
-                    {permission && recordingStatus === "inactive" ? (
-                        <button onClick={startRecording} type="button">
-                            Start Recording
-                        </button>
-                    ) : null}
+                    {permission && recordingStatus === "inactive" && ready ? (<Button onClick={startRecording} type="button">
+                        Start Recording
+                    </Button>) : null}
                     {recordingStatus === "recording" ? (
-                        <button onClick={stopRecording} type="button">
+                        <Button onClick={stopRecording} type="button">
                             Stop Recording
-                        </button>
+                        </Button>
                     ) : null}
 
                 </div>

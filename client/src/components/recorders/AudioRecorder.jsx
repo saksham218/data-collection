@@ -1,15 +1,17 @@
 import React from 'react'
 import { useState, useRef } from "react";
+import { Button } from '@mui/material'
 
 const mimeType = "audio/webm";
 
-const AudioRecorder = ({ setAudioBlob }) => {
+const AudioRecorder = ({ setAudioBlob, setIsAudio }) => {
     const [permission, setPermission] = useState(false);
     const mediaRecorder = useRef(null);
     const [recordingStatus, setRecordingStatus] = useState("inactive");
     const [stream, setStream] = useState(null);
     const [audioChunks, setAudioChunks] = useState([]);
     const [audio, setAudio] = useState(null);
+    const [ready, setReady] = useState(false);
 
     const getMicrophonePermission = async () => {
         if ("MediaRecorder" in window) {
@@ -19,6 +21,7 @@ const AudioRecorder = ({ setAudioBlob }) => {
                     video: false,
                 });
                 setPermission(true);
+                setReady(true);
                 setStream(streamData);
             } catch (err) {
                 alert(err.message);
@@ -26,6 +29,14 @@ const AudioRecorder = ({ setAudioBlob }) => {
         } else {
             alert("The MediaRecorder API is not supported in your browser.");
         }
+    };
+
+    const retake = () => {
+        setAudioBlob(null);
+        setAudioChunks([]);
+        setIsAudio(false);
+        setAudio(null);
+        setReady(true);
     };
 
     const startRecording = async () => {
@@ -48,6 +59,9 @@ const AudioRecorder = ({ setAudioBlob }) => {
 
     const stopRecording = () => {
         setRecordingStatus("inactive");
+
+        console.log("recording stopped");
+        console.log("ready: ", ready);
         //stops the recording instance
         mediaRecorder.current.stop();
         mediaRecorder.current.onstop = () => {
@@ -56,10 +70,12 @@ const AudioRecorder = ({ setAudioBlob }) => {
             //creates a playable URL from the blob file.
             console.log("audioBlob", audioBlob);
             setAudioBlob(audioBlob);
+            setIsAudio(true);
             const audioUrl = URL.createObjectURL(audioBlob);
             console.log("Audio: ", audioChunks)
             setAudio(audioUrl);
             setAudioChunks([]);
+
         };
     };
 
@@ -74,13 +90,19 @@ const AudioRecorder = ({ setAudioBlob }) => {
                             Get Microphone
                         </button>
                     ) : null}
-                    {permission && recordingStatus === "inactive" ? (
-                        <button onClick={startRecording} type="button">
+                    {permission && recordingStatus === "inactive" && ready ?
+
+                        (<Button onClick={startRecording} type="button">
                             Start Recording
-                        </button>
-                    ) : null}
+                        </Button>) : null}
+                    {permission && recordingStatus === "inactive" && !ready ?
+                        (<Button onClick={retake} type="button">Retake</Button>)
+                        : null}
                     {recordingStatus === "recording" ? (
-                        <button onClick={stopRecording} type="button">
+                        <button onClick={() => {
+                            setReady(false);
+                            stopRecording();
+                        }} type="button">
                             Stop Recording
                         </button>
                     ) : null}

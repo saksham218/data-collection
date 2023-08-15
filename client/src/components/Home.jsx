@@ -12,6 +12,9 @@ const Home = () => {
     const [videoBlob, setVideoBlob] = useState(null);
     const [audioBlob, setAudioBlob] = useState(null);
     const [imageBlob, setImageBlob] = useState(null);
+    const [isVideo, setIsVideo] = useState(false);
+    const [isAudio, setIsAudio] = useState(false);
+    const [isImage, setIsImage] = useState(false);
 
     const states = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh',
         'Jharkhand', 'Karnataka', 'Kearla', 'Madya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan',
@@ -33,10 +36,13 @@ const Home = () => {
             </Box>
 
 
-            <ImageCapturer setImageBlob={setImageBlob} />
-            <VideoRecorder setVideoBlob={setVideoBlob} />
-            <AudioRecorder setAudioBlob={setAudioBlob} />
-            <Button variant="contained" color="primary" onClick={submitData}>Submit</Button>
+            <ImageCapturer setImageBlob={setImageBlob} setIsImage={setIsImage} />
+            <VideoRecorder setVideoBlob={setVideoBlob} setIsVideo={setIsVideo} />
+            <AudioRecorder setAudioBlob={setAudioBlob} setIsAudio={setIsAudio} />
+            <Button variant="contained" color="primary" onClick={submitData}
+                disabled={(isVideo && isAudio && isImage && name !== "" && state !== "") ? false : true}>
+                Submit
+            </Button>
         </div>
     );
 }

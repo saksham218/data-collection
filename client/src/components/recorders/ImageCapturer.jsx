@@ -7,7 +7,7 @@ const videoConstraints = {
     height: 400,
     facingMode: 'user',
 }
-const ImageCapturer = ({ setImageBlob }) => {
+const ImageCapturer = ({ setImageBlob, setIsImage }) => {
     const [picture, setPicture] = useState('')
     const webcamRef = useRef(null)
     const capture = useCallback(() => {
@@ -15,6 +15,7 @@ const ImageCapturer = ({ setImageBlob }) => {
         console.log("Image:", pictureSrc)
         setPicture(pictureSrc)
         setImageBlob(pictureSrc)
+        setIsImage(true)
     })
     return (
         <div>
@@ -39,6 +40,7 @@ const ImageCapturer = ({ setImageBlob }) => {
                         onClick={(e) => {
                             e.preventDefault()
                             setPicture('')
+                            setIsImage(false)
                         }}
 
                     >
