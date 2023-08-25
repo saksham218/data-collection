@@ -55,7 +55,8 @@ const Home = () => {
             audioName: audioRes.name
         }
         console.log("metadata", metadata);
-        await postMetaData(metadata);
+        const metaadataRes = await postMetaData(metadata);
+        console.log("metaadataRes", metaadataRes.data);
         // navigate('/thankyou');
     };
     return (
