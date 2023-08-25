@@ -6,6 +6,8 @@ dotenv.config();
 const storage = new GridFsStorage({
     url: process.env.MONGODB_URL,
     file: (req, file) => {
+        console.log("file: ", file);
+
         return new Promise((resolve, reject) => {
             // const filename = file.originalname;
 

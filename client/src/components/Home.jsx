@@ -4,9 +4,12 @@ import { Typography, TextField, Menu, MenuItem, Select, FormControl, InputLabel,
 import VideoRecorder from "./recorders/VideoRecorder";
 import AudioRecorder from "./recorders/AudioRecorder";
 import ImageCapturer from './recorders/ImageCapturer';
+import { postBlob, postMetaData } from '../api';
+import { redirect, useNavigate } from 'react-router-dom';
 
 const Home = () => {
 
+    const navigate = useNavigate();
     const [name, setName] = useState("");
     const [state, setState] = useState("");
     const [videoBlob, setVideoBlob] = useState(null);
@@ -20,7 +23,41 @@ const Home = () => {
         'Jharkhand', 'Karnataka', 'Kearla', 'Madya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan',
         'Sikkim', 'Tamil Nadu', 'Telagana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'];
 
-    const submitData = () => { };
+    const submitBlob = async (blob, name) => {
+
+        const formData = new FormData();
+        const file = new File([blob], name);
+        formData.append("file", file);
+        const res = await postBlob(formData);
+        return res.data;
+
+    }
+    const submitData = async () => {
+        console.log("image", imageBlob)
+        console.log("video", videoBlob)
+        console.log("audio", audioBlob)
+
+        const imageRes = await submitBlob(imageBlob, name + "image");
+        console.log("imageRes", imageRes);
+        const videoRes = await submitBlob(videoBlob, name + "video");
+        console.log("videoRes", videoRes);
+        const audioRes = await submitBlob(audioBlob, name + "audio");
+        console.log("audioRes", audioRes);
+
+        const metadata = {
+            name: name,
+            state: state,
+            imageId: imageRes.id,
+            imageName: imageRes.name,
+            videoId: videoRes.id,
+            videoName: videoRes.name,
+            audioId: audioRes.id,
+            audioName: audioRes.name
+        }
+        console.log("metadata", metadata);
+        await postMetaData(metadata);
+        // navigate('/thankyou');
+    };
     return (
         <div>
             <h1>Data Collection Platform</h1>

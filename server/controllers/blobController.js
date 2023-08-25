@@ -2,12 +2,20 @@ import { bucket, gfs } from '../models/blob.js';
 import mongoose from 'mongoose';
 
 export const uploadSingleFile = async (req, res) => {
-    console.log(req);
-    res.status(200).json({
-        message: 'File uploaded successfully',
-        id: req.file.id,
-        name: req.file.originalname
-    });
+    console.log("hi");
+    console.log(req.file);
+    if (req && req.file) {
+        return res.status(200).json({
+            message: 'File uploaded successfully',
+            id: req.file.id,
+            name: req.file.originalname
+        });
+    }
+    else {
+        return res.status(500).json({
+            message: 'File upload failed'
+        });
+    }
 }
 
 export const getAllFiles = async (req, res) => {

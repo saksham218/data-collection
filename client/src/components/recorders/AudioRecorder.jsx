@@ -86,9 +86,9 @@ const AudioRecorder = ({ setAudioBlob, setIsAudio }) => {
             <main>
                 <div className="audio-controls">
                     {!permission ? (
-                        <button onClick={getMicrophonePermission} type="button">
+                        <Button onClick={getMicrophonePermission} type="button">
                             Get Microphone
-                        </button>
+                        </Button>
                     ) : null}
                     {permission && recordingStatus === "inactive" && ready ?
 
@@ -99,12 +99,12 @@ const AudioRecorder = ({ setAudioBlob, setIsAudio }) => {
                         (<Button onClick={retake} type="button">Retake</Button>)
                         : null}
                     {recordingStatus === "recording" ? (
-                        <button onClick={() => {
+                        <Button onClick={() => {
                             setReady(false);
                             stopRecording();
                         }} type="button">
                             Stop Recording
-                        </button>
+                        </Button>
                     ) : null}
                     {audio ? (
                         <div className="audio-container">

@@ -7,6 +7,9 @@ const videoConstraints = {
     height: 400,
     facingMode: 'user',
 }
+
+const mimeType = "image/jpeg";
+
 const ImageCapturer = ({ setImageBlob, setIsImage }) => {
     const [picture, setPicture] = useState('')
     const webcamRef = useRef(null)
@@ -14,7 +17,10 @@ const ImageCapturer = ({ setImageBlob, setIsImage }) => {
         const pictureSrc = webcamRef.current.getScreenshot()
         console.log("Image:", pictureSrc)
         setPicture(pictureSrc)
-        setImageBlob(pictureSrc)
+        const imageBlob = new Blob([pictureSrc], { type: mimeType });
+        //creates a playable URL from the blob file.
+        console.log("imageBlob", imageBlob);
+        setImageBlob(imageBlob)
         setIsImage(true)
     })
     return (
