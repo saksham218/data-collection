@@ -127,9 +127,9 @@ const VideoRecorder = ({ setVideoBlob, setIsVideo }) => {
                 {recordedVideo ? (
                     <div className="recorded-player">
                         <video className="recorded" src={recordedVideo} controls></video>
-                        <a download href={recordedVideo}>
+                        {/* <a download href={recordedVideo}>
                             Download Recording
-                        </a>
+                        </a> */}
 
 
                     </div>

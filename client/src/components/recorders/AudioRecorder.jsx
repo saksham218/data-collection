@@ -109,9 +109,9 @@ const AudioRecorder = ({ setAudioBlob, setIsAudio }) => {
                     {audio ? (
                         <div className="audio-container">
                             <audio src={audio} controls></audio>
-                            <a download href={audio}>
+                            {/* <a download href={audio}>
                                 Download Recording
-                            </a>
+                            </a> */}
                         </div>
                     ) : null}
                 </div>

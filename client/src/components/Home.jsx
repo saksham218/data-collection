@@ -5,7 +5,8 @@ import VideoRecorder from "./recorders/VideoRecorder";
 import AudioRecorder from "./recorders/AudioRecorder";
 import ImageCapturer from './recorders/ImageCapturer';
 import { postBlob, postMetaData } from '../api';
-import { redirect, useNavigate } from 'react-router-dom';
+import { Link, redirect, useNavigate } from 'react-router-dom';
+import State from './State';
 
 const Home = () => {
 
@@ -18,6 +19,8 @@ const Home = () => {
     const [isVideo, setIsVideo] = useState(false);
     const [isAudio, setIsAudio] = useState(false);
     const [isImage, setIsImage] = useState(false);
+
+    const [statesVisited, setStatesVisited] = useState([]);
 
     const states = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh',
         'Jharkhand', 'Karnataka', 'Kearla', 'Madya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan',
@@ -61,16 +64,21 @@ const Home = () => {
     };
     return (
         <div>
+            <Link to="/aboutus">About Us</Link>
             <h1>Data Collection Platform</h1>
             <TextField label="Name" gutterBottom value={name} onChange={(e) => { setName(e.target.value) }} />
 
-            <Box >
+            {/* <Box >
                 <FormControl style={{ width: "225px" }}>
                     <InputLabel>State</InputLabel>
                     <Select label="State" value={state} onChange={(e) => setState(e.target.value)}>
                         {states.map(s => <MenuItem value={s}>{s}</MenuItem>)}
                     </Select>
                 </FormControl>
+            </Box> */}
+            <Box>
+                {statesVisited.map((s, index) => <State s={s} index={index} states={states} setStatesVisited={setStatesVisited} statesVisited={statesVisited} />)}
+                <Button variant="contained" color="primary" onClick={() => setStatesVisited([...statesVisited, { stateName: "", durationLived: 0 }])}>Add State</Button>
             </Box>
 
 
