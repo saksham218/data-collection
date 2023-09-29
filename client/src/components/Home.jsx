@@ -30,6 +30,7 @@ const Home = () => {
 
     const [statesVisited, setStatesVisited] = useState([]);
     const [languagesSpoken, setLanguagesSpoken] = useState([]);
+    const [languageBlobs, setLanguageBlobs] = useState([]);
 
     const states = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh',
         'Jharkhand', 'Karnataka', 'Kearla', 'Madya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan',
@@ -85,8 +86,7 @@ const Home = () => {
                         aria-labelledby="demo-radio-buttons-group-label"
                         defaultValue="female"
                         name="radio-buttons-group"
-                        onChange={(e) => { setGender(e.target.value) }}
-                    >
+                        onChange={(e) => { setGender(e.target.value) }}>
                         <FormControlLabel value="female" control={<Radio />} label="Female" />
                         <FormControlLabel value="male" control={<Radio />} label="Male" />
                         <FormControlLabel value="other" control={<Radio />} label="Other" />
@@ -121,7 +121,7 @@ const Home = () => {
 
             <Box>
                 {statesVisited.map((s, index) => <State s={s} index={index} states={states} setStatesVisited={setStatesVisited} statesVisited={statesVisited} />)}
-                <Button variant="contained" color="primary" onClick={() => setStatesVisited([...statesVisited, { stateName: "", durationLived: 0 }])}> Add State</Button >
+                <Button variant="contained" color="primary" onClick={() => setStatesVisited([...statesVisited, { stateName: "", durationLived: 0 }])}> Add State</Button>
             </Box>
 
             {/* 
@@ -134,8 +134,8 @@ const Home = () => {
             </Button> */}
 
             <Box>
-                {languagesSpoken.map((l, index) => <Language l={l} index={index} languages={languages} setLanguagesSpoken={setLanguagesSpoken} languagesSpoken={languagesSpoken} statesVisited={statesVisited} states={states} />)}
-                <Button variant="contained" color="primary" onClick={() => setLanguagesSpoken([...languagesSpoken, { languageName: '', proficiency: '', audio: '', video: '', learnedInState: '' }])}> Add Language</Button >
+                {languagesSpoken.map((l, index) => <Language l={l} index={index} languages={languages} setLanguagesSpoken={setLanguagesSpoken} languagesSpoken={languagesSpoken} statesVisited={statesVisited} states={states} languageBlobs={languageBlobs} setLanguageBlobs={setLanguageBlobs} />)}
+                <Button variant="contained" color="primary" onClick={() => { setLanguagesSpoken([...languagesSpoken, { languageName: '', proficiency: '', mode: '', learnedInState: '' }]); setLanguageBlobs([...languageBlobs, null]); }}> Add Language</Button>
 
             </Box>
         </div>

@@ -7,7 +7,12 @@ import { Button } from '@mui/material'
 
 const mimeType = "video/webm";
 
-const VideoRecorder = ({ setVideoBlob, setIsVideo }) => {
+const VideoRecorder = ({
+    // setVideoBlob, setIsVideo 
+    index, languageBlobs, setLanguageBlobs
+}) => {
+    const [videoBlob, setVideoBlob] = useState(null);
+    const [isVideo, setIsVideo] = useState(false);
     const [permission, setPermission] = useState(false);
     const mediaRecorder = useRef(null);
     const liveVideoFeed = useRef(null);
@@ -91,6 +96,10 @@ const VideoRecorder = ({ setVideoBlob, setIsVideo }) => {
             console.log("videoBlob", videoBlob);
             setIsVideo(true);
             setVideoBlob(videoBlob);
+            let data = [...languageBlobs];
+            data[index] = videoBlob;
+            setLanguageBlobs(data);
+            console.log(languageBlobs);
             const videoUrl = URL.createObjectURL(videoBlob);
             setRecordedVideo(videoUrl);
             setVideoChunks([]);

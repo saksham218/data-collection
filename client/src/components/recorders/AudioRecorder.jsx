@@ -4,7 +4,12 @@ import { Button } from '@mui/material'
 
 const mimeType = "audio/webm";
 
-const AudioRecorder = ({ setAudioBlob, setIsAudio }) => {
+const AudioRecorder = ({
+    // setAudioBlob, setIsAudio
+    index, languageBlobs, setLanguageBlobs
+}) => {
+    const [audioBlob, setAudioBlob] = useState(null);
+    const [isAudio, setIsAudio] = useState(false);
     const [permission, setPermission] = useState(false);
     const mediaRecorder = useRef(null);
     const [recordingStatus, setRecordingStatus] = useState("inactive");
@@ -70,6 +75,10 @@ const AudioRecorder = ({ setAudioBlob, setIsAudio }) => {
             //creates a playable URL from the blob file.
             console.log("audioBlob", audioBlob);
             setAudioBlob(audioBlob);
+            let data = [...languageBlobs];
+            data[index] = audioBlob;
+            setLanguageBlobs(data);
+            console.log(languageBlobs);
             setIsAudio(true);
             const audioUrl = URL.createObjectURL(audioBlob);
             console.log("Audio: ", audioChunks)

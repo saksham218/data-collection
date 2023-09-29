@@ -1,11 +1,13 @@
 import React from 'react'
 import AudioRecorder from './AudioRecorder'
+import VideoRecorder from './VideoRecorder'
 
 
-const Recorder = ({ mode }) => {
+const Recorder = ({ mode, index, languageBlobs, setLanguageBlobs }) => {
     return (
         <div>
-            {mode === "audio" ? (<AudioRecorder />) : (<VideoRecorder />)}
+            {mode === "Audio" ? (<AudioRecorder index={index} languageBlobs={languageBlobs} setLanguageBlobs={setLanguageBlobs} />) :
+                (mode === "Video" ? (<VideoRecorder index={index} languageBlobs={languageBlobs} setLanguageBlobs={setLanguageBlobs} />) : null)}
         </div>
     )
 }
