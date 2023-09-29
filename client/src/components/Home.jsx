@@ -31,6 +31,7 @@ const Home = () => {
     const [statesVisited, setStatesVisited] = useState([]);
     const [languagesSpoken, setLanguagesSpoken] = useState([]);
     const [languageBlobs, setLanguageBlobs] = useState([]);
+    const [imageBlobs, setImageBlobs] = useState([null, null, null]);
 
     const states = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh',
         'Jharkhand', 'Karnataka', 'Kearla', 'Madya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan',
@@ -38,6 +39,7 @@ const Home = () => {
 
     const languages = ['Hindi', 'English', 'Tamil', 'Telugu', 'Kannada', 'Malayalam', 'Marathi', 'Gujarati', 'Bengali', 'Odia', 'Punjabi', 'Assamese', 'Kashmiri', 'Sindhi', 'Urdu', 'Konkani', 'Manipuri', 'Nepali', 'Bodo', 'Dogri', 'Maithili', 'Santali', 'Sanskrit', 'Sindhi', 'Urdu']
 
+    const images = ['Front', 'Left', 'Right'];
     // const submitBlob = async (blob, name) => {
 
     //     const formData = new FormData();
@@ -120,6 +122,11 @@ const Home = () => {
             </Box> */}
 
             <Box>
+                {images.map((i, index) => <Box><Typography variant='h2'>{i} Image</Typography><ImageCapturer index={index} imageBlobs={imageBlobs} setImageBlobs={setImageBlobs} /></Box>)}
+            </Box>
+
+
+            <Box>
                 {statesVisited.map((s, index) => <State s={s} index={index} states={states} setStatesVisited={setStatesVisited} statesVisited={statesVisited} />)}
                 <Button variant="contained" color="primary" onClick={() => setStatesVisited([...statesVisited, { stateName: "", durationLived: 0 }])}> Add State</Button>
             </Box>
@@ -136,7 +143,6 @@ const Home = () => {
             <Box>
                 {languagesSpoken.map((l, index) => <Language l={l} index={index} languages={languages} setLanguagesSpoken={setLanguagesSpoken} languagesSpoken={languagesSpoken} statesVisited={statesVisited} states={states} languageBlobs={languageBlobs} setLanguageBlobs={setLanguageBlobs} />)}
                 <Button variant="contained" color="primary" onClick={() => { setLanguagesSpoken([...languagesSpoken, { languageName: '', proficiency: '', mode: '', learnedInState: '' }]); setLanguageBlobs([...languageBlobs, null]); }}> Add Language</Button>
-
             </Box>
         </div>
     );

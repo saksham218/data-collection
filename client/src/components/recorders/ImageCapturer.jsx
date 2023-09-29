@@ -10,7 +10,12 @@ const videoConstraints = {
 
 const mimeType = "image/jpeg";
 
-const ImageCapturer = ({ setImageBlob, setIsImage }) => {
+const ImageCapturer = ({
+    // setImageBlob, setIsImage
+    index, imageBlobs, setImageBlobs
+}) => {
+    const [imageBlob, setImageBlob] = useState(null);
+    const [isImage, setIsImage] = useState(false);
     const [picture, setPicture] = useState('')
     const webcamRef = useRef(null)
     const capture = useCallback(() => {
@@ -21,11 +26,15 @@ const ImageCapturer = ({ setImageBlob, setIsImage }) => {
         //creates a playable URL from the blob file.
         console.log("imageBlob", imageBlob);
         setImageBlob(imageBlob)
+        let data = [...imageBlobs];
+        data[index] = imageBlob;
+        setImageBlobs(data);
+        console.log(imageBlobs);
         setIsImage(true)
     })
     return (
         <div>
-            <h2>Image</h2>
+            {/* <h2>Image</h2> */}
             <div>
                 {picture === '' ? (
                     <Webcam
@@ -46,6 +55,11 @@ const ImageCapturer = ({ setImageBlob, setIsImage }) => {
                         onClick={(e) => {
                             e.preventDefault()
                             setPicture('')
+                            setImageBlob(null)
+                            let data = [...imageBlobs];
+                            data[index] = null;
+                            setImageBlobs(data);
+                            console.log(imageBlobs);
                             setIsImage(false)
                         }}
 
