@@ -40,6 +40,90 @@ const Home = () => {
     const languages = ['Hindi', 'English', 'Tamil', 'Telugu', 'Kannada', 'Malayalam', 'Marathi', 'Gujarati', 'Bengali', 'Odia', 'Punjabi', 'Assamese', 'Kashmiri', 'Sindhi', 'Urdu', 'Konkani', 'Manipuri', 'Nepali', 'Bodo', 'Dogri', 'Maithili', 'Santali', 'Sanskrit', 'Sindhi', 'Urdu']
 
     const images = ['Front', 'Left', 'Right'];
+
+    const submitImages = async () => {
+        console.log("images: ", imageBlobs)
+        const imageRes = await Promise.all(imageBlobs.map(async (blob, index) => {
+            if (blob) {
+                const formData = new FormData();
+                const file = new File([blob], name + images[index] + 'Image');
+                formData.append("file", file);
+                const res = await postBlob(formData);
+                return res.data;
+            }
+            else {
+                return null;
+            }
+        }));
+        console.log("imageRes", imageRes);
+        return imageRes;
+    }
+
+    const submitLanguageBlobs = async () => {
+        console.log("languageBlobs: ", languageBlobs)
+        const languageRes = await Promise.all(languageBlobs.map(async (blob, index) => {
+            if (blob) {
+                const formData = new FormData();
+                const file = new File([blob], name + languagesSpoken[index].languageName + languagesSpoken[index].mode);
+                formData.append("file", file);
+                const res = await postBlob(formData);
+                return res.data;
+            }
+            else {
+                return null;
+            }
+        }));
+        console.log("languageRes", languageRes);
+        return languageRes;
+    }
+    const submitData = async () => {
+        submitImages().then((imageRes) => {
+            console.log("imageRes", imageRes);
+            submitLanguageBlobs().then((languageRes) => {
+                console.log("languageRes", languageRes);
+
+                let imagesData = {
+                    frontImageBlobId: imageRes[0] ? imageRes[0].id : null,
+                    frontImageBlobName: imageRes[0] ? imageRes[0].name : null,
+                    leftImageBlobId: imageRes[1] ? imageRes[1].id : null,
+                    leftImageBlobName: imageRes[1] ? imageRes[1].name : null,
+                    rightImageBlobId: imageRes[2] ? imageRes[2].id : null,
+                    rightImageBlobName: imageRes[2] ? imageRes[2].name : null
+                }
+
+                let statesVisitedData = statesVisited.map((s, index) => {
+                    return { stateName: s.stateName, durationLived: s.durationLived }
+                })
+
+                let languagesSpokenData = languagesSpoken.map((l, index) => {
+                    return {
+                        languageName: l.languageName,
+                        proficiency: l.proficiency,
+                        learnedInState: l.learnedInState,
+                        mode: l.mode,
+                        languageBlobId: languageRes[index] ? languageRes[index].id : null,
+                        languageBlobName: languageRes[index] ? languageRes[index].name : null
+                    }
+                })
+
+
+                const metadata = {
+                    name: name,
+                    dateOfBirth: dob,
+                    gender: gender,
+                    images: imagesData,
+                    states: statesVisitedData,
+                    languages: languagesSpokenData,
+                }
+
+                console.log("metadata", metadata);
+                const metaadataRes = postMetaData(metadata).then((res) => {
+                    console.log("metaadataRes", res.data);
+                    // navigate('/thankyou');
+                });
+            })
+        })
+    }
     // const submitBlob = async (blob, name) => {
 
     //     const formData = new FormData();
@@ -144,8 +228,14 @@ const Home = () => {
                 {languagesSpoken.map((l, index) => <Language l={l} index={index} languages={languages} setLanguagesSpoken={setLanguagesSpoken} languagesSpoken={languagesSpoken} statesVisited={statesVisited} states={states} languageBlobs={languageBlobs} setLanguageBlobs={setLanguageBlobs} />)}
                 <Button variant="contained" color="primary" onClick={() => { setLanguagesSpoken([...languagesSpoken, { languageName: '', proficiency: '', mode: '', learnedInState: '' }]); setLanguageBlobs([...languageBlobs, null]); }}> Add Language</Button>
             </Box>
+
+            <Button variant="contained" color="primary" onClick={submitData}
+            // disabled={(isVideo && isAudio && isImage && name !== "" && state !== "") ? false : true}
+            >
+                Submit
+            </Button>
         </div>
     );
 }
 
-export default Home
+export default Home;

@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const metadataSchema = mongoose.Schema({
     name: String,
     gender: String,
-    dob: Date,
+    dateOfBirth: Date,
     // state: String,
     // imageId: String,
     // imageName: String,
@@ -11,14 +11,14 @@ const metadataSchema = mongoose.Schema({
     // videoName: String,
     // audioId: String,
     // audioName: String
-    images: [{
+    images: {
         frontImageBlobId: String,
         frontImageBlobName: String,
         leftImageBlobId: String,
         leftImageBlobName: String,
         rightImageBlobId: String,
         rightImageBlobName: String,
-    }],
+    },
     states: [{
         stateName: String,
         durationLived: Number
