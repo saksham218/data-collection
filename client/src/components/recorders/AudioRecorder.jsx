@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useRef } from "react";
 import { Button } from '@mui/material'
 
-const mimeType = "audio/webm";
+const mimeType = "audio/wav";
 
 const AudioRecorder = ({
     // setAudioBlob, setIsAudio
