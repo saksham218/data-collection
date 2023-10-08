@@ -42,6 +42,10 @@ const AudioRecorder = ({
         setIsAudio(false);
         setAudio(null);
         setReady(true);
+
+        let data = [...languageBlobs];
+        data[index] = null;
+        setLanguageBlobs(data);
     };
 
     const startRecording = async () => {

@@ -22,7 +22,7 @@ const Home = () => {
     // const [name, setName] = useState("");
     const [gender, setGender] = useState("female");
     const [age, setAge] = useState(0);
-    const [dob, setDob] = useState(null);
+    // const [dob, setDob] = useState(null);
     // const [state, setState] = useState("");
     // const [videoBlob, setVideoBlob] = useState(null);
     // const [audioBlob, setAudioBlob] = useState(null);
@@ -44,7 +44,7 @@ const Home = () => {
         'Sikkim', 'Tamil Nadu', 'Telagana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'];
 
     const languages = ['Hindi', 'English', 'Tamil', 'Telugu', 'Kannada', 'Malayalam', 'Marathi', 'Gujarati', 'Bengali', 'Odia', 'Punjabi', 'Assamese', 'Kashmiri', 'Sindhi', 'Urdu', 'Konkani', 'Manipuri', 'Nepali', 'Bodo', 'Dogri', 'Maithili', 'Santali', 'Sanskrit', 'Sindhi', 'Urdu']
-
+    const proficiencies = ["Cannot speak but understand only", "Can speak only", "Can speak and read only", "Can speak, read and write"]
     // const images = ['Front', 'Left', 'Right'];
 
     // const submitImages = async () => {
@@ -70,7 +70,7 @@ const Home = () => {
         const controlledLanguageRes = await Promise.all(controlledLanguageBlobs.map(async (blob, index) => {
             if (blob) {
                 const formData = new FormData();
-                const file = new File([blob], languagesSpoken[index].languageName + "controlled" + languagesSpoken[index].mode);
+                const file = new File([blob], languagesSpoken[index].languageName + "CONTROLLED" + languagesSpoken[index].mode);
                 formData.append("file", file);
                 const res = await postBlob(formData);
                 return res.data;
@@ -88,7 +88,7 @@ const Home = () => {
         const ownLanguageRes = await Promise.all(ownLanguageBlobs.map(async (blob, index) => {
             if (blob) {
                 const formData = new FormData();
-                const file = new File([blob], languagesSpoken[index].languageName + "own" + languagesSpoken[index].mode);
+                const file = new File([blob], languagesSpoken[index].languageName + "OWN" + languagesSpoken[index].mode);
                 formData.append("file", file);
                 const res = await postBlob(formData);
                 return res.data;
@@ -268,10 +268,13 @@ const Home = () => {
 
             {step === 2 ? <Box>
                 {statesVisited.map((s, index) => <State s={s} index={index} states={states} setStatesVisited={setStatesVisited} statesVisited={statesVisited} />)}
-                <Button variant="contained" color="primary" onClick={() => setStatesVisited([...statesVisited, { stateName: "", durationLived: 0 }])}> Add State</Button>
+                <Button variant="contained" color="primary" disabled={(statesVisited.length > 0 && statesVisited[statesVisited.length - 1].stateName === "") ? true : false}
+                    onClick={() => setStatesVisited([...statesVisited, { stateName: "", durationLived: 0 }])}> Add State</Button>
 
                 <Button variant="contained" color="primary" onClick={prevStep}> Previous</Button>
-                <Button variant="contained" color="primary" onClick={nextStep}> Next</Button>
+                <Button variant="contained" color="primary" onClick={nextStep}
+                    disabled={(statesVisited.map(s => { return s.stateName }).includes("")) ? true : false}
+                > Next</Button>
 
             </Box> : null}
 
@@ -285,13 +288,26 @@ const Home = () => {
             </Button> */}
 
             {step === 3 ? <Box><Box>
-                {languagesSpoken.map((l, index) => <Language l={l} index={index} languages={languages} setLanguagesSpoken={setLanguagesSpoken} languagesSpoken={languagesSpoken} statesVisited={statesVisited} states={states} controlledLanguageBlobs={controlledLanguageBlobs} setControlledLanguageBlobs={setControlledLanguageBlobs} ownLanguageBlobs={ownLanguageBlobs} setOwnLanguageBlobs={setOwnLanguageBlobs} />)}
-                <Button variant="contained" color="primary" onClick={() => { setLanguagesSpoken([...languagesSpoken, { languageName: '', proficiency: '', mode: '', learnedInState: '' }]); setControlledLanguageBlobs([...controlledLanguageBlobs, null]); setOwnLanguageBlobs([...ownLanguageBlobs, null]); }}> Add Language</Button>
+                {languagesSpoken.map((l, index) => <Language l={l} index={index} proficiencies={proficiencies} languages={languages} setLanguagesSpoken={setLanguagesSpoken} languagesSpoken={languagesSpoken} statesVisited={statesVisited} states={states} controlledLanguageBlobs={controlledLanguageBlobs} setControlledLanguageBlobs={setControlledLanguageBlobs} ownLanguageBlobs={ownLanguageBlobs} setOwnLanguageBlobs={setOwnLanguageBlobs} />)}
+                <Button variant="contained" color="primary"
+                    disabled={languagesSpoken.length > 0 && (languagesSpoken[languagesSpoken.length - 1].languageName === ""
+                        || languagesSpoken[languagesSpoken.length - 1].proficiency === ""
+                        || languagesSpoken[languagesSpoken.length - 1].learnedInState === ""
+                        || (languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[1] && ownLanguageBlobs[ownLanguageBlobs.length - 1] === null)
+                        || ((languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[2] || languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[3])
+                            && (ownLanguageBlobs[ownLanguageBlobs.length - 1] === null || controlledLanguageBlobs[controlledLanguageBlobs.length - 1] === null))) ? true : false}
+                    onClick={() => { setLanguagesSpoken([...languagesSpoken, { languageName: '', proficiency: '', mode: '', learnedInState: '' }]); setControlledLanguageBlobs([...controlledLanguageBlobs, null]); setOwnLanguageBlobs([...ownLanguageBlobs, null]); }}> Add Language</Button>
             </Box>
 
                 <Button variant="contained" color="primary" onClick={prevStep}> Previous</Button>
                 <Button variant="contained" color="primary" onClick={submitData}
-                // disabled={(isVideo && isAudio && isImage && name !== "" && state !== "") ? false : true}
+                    // disabled={(isVideo && isAudio && isImage && name !== "" && state !== "") ? false : true}
+                    disabled={languagesSpoken.length > 0 && ((languagesSpoken.map(l => { return l.languageName }).includes("")
+                        || languagesSpoken.map(l => { return l.proficiency }).includes("")
+                        || languagesSpoken.map(l => { return l.learnedInState }).includes("")
+                        || (languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[1] && ownLanguageBlobs[ownLanguageBlobs.length - 1] === null)
+                        || ((languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[2] || languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[3])
+                            && (ownLanguageBlobs[ownLanguageBlobs.length - 1] === null || controlledLanguageBlobs[controlledLanguageBlobs.length - 1] === null)))) ? true : false}
                 >
                     Submit
                 </Button>
