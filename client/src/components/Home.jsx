@@ -198,12 +198,21 @@ const Home = () => {
     //     console.log("metaadataRes", metaadataRes.data);
     //     // navigate('/thankyou');
     // };
+    const nextStep = () => {
+        setStep(step + 1);
+    }
+
+    const prevStep = () => {
+        setStep(step - 1);
+    }
+
+
     return (
         <div>
             <Link to="/aboutus">About Us</Link>
             <h1>Data Collection Platform</h1>
             {/* <TextField label="Name" gutterBottom value={name} onChange={(e) => { setName(e.target.value) }} /> */}
-            <Box>
+            {step === 1 ? <Box><Box>
                 <FormControl>
                     <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
                     <RadioGroup
@@ -219,7 +228,7 @@ const Home = () => {
                 </FormControl>
             </Box>
 
-            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                     label="Date of Birth"
                     format="DD/MM/YYYY"
@@ -234,12 +243,14 @@ const Home = () => {
                 />
             </LocalizationProvider> */}
 
-            <Typography>Enter Age in years</Typography>
+                <Typography>Enter Age in years</Typography>
 
-            <InputNumber min={0} value={age}
-                showButtons
-                placeholder='Age in years'
-                onChange={(e) => { setAge(e.value); }} />
+                <InputNumber min={0} value={age}
+                    showButtons
+                    placeholder='Age in years'
+                    onChange={(e) => { setAge(e.value); }} />
+                <Button variant="contained" color="primary" onClick={nextStep}> Next</Button>
+            </Box> : null}
 
             {/* <Box >
                 <FormControl style={{ width: "225px" }}>
@@ -255,10 +266,14 @@ const Home = () => {
             </Box> */}
 
 
-            <Box>
+            {step === 2 ? <Box>
                 {statesVisited.map((s, index) => <State s={s} index={index} states={states} setStatesVisited={setStatesVisited} statesVisited={statesVisited} />)}
                 <Button variant="contained" color="primary" onClick={() => setStatesVisited([...statesVisited, { stateName: "", durationLived: 0 }])}> Add State</Button>
-            </Box>
+
+                <Button variant="contained" color="primary" onClick={prevStep}> Previous</Button>
+                <Button variant="contained" color="primary" onClick={nextStep}> Next</Button>
+
+            </Box> : null}
 
             {/* 
             <ImageCapturer setImageBlob={setImageBlob} setIsImage={setIsImage} />
@@ -269,16 +284,18 @@ const Home = () => {
                 Submit
             </Button> */}
 
-            <Box>
+            {step === 3 ? <Box><Box>
                 {languagesSpoken.map((l, index) => <Language l={l} index={index} languages={languages} setLanguagesSpoken={setLanguagesSpoken} languagesSpoken={languagesSpoken} statesVisited={statesVisited} states={states} controlledLanguageBlobs={controlledLanguageBlobs} setControlledLanguageBlobs={setControlledLanguageBlobs} ownLanguageBlobs={ownLanguageBlobs} setOwnLanguageBlobs={setOwnLanguageBlobs} />)}
                 <Button variant="contained" color="primary" onClick={() => { setLanguagesSpoken([...languagesSpoken, { languageName: '', proficiency: '', mode: '', learnedInState: '' }]); setControlledLanguageBlobs([...controlledLanguageBlobs, null]); setOwnLanguageBlobs([...ownLanguageBlobs, null]); }}> Add Language</Button>
             </Box>
 
-            <Button variant="contained" color="primary" onClick={submitData}
-            // disabled={(isVideo && isAudio && isImage && name !== "" && state !== "") ? false : true}
-            >
-                Submit
-            </Button>
+                <Button variant="contained" color="primary" onClick={prevStep}> Previous</Button>
+                <Button variant="contained" color="primary" onClick={submitData}
+                // disabled={(isVideo && isAudio && isImage && name !== "" && state !== "") ? false : true}
+                >
+                    Submit
+                </Button>
+            </Box> : null}
         </div>
     );
 }
