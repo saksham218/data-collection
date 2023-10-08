@@ -10,7 +10,7 @@ const State = ({ s, index, states, setStatesVisited, statesVisited }) => {
 
     return (
         <div>
-            <Box>
+            <Box style={{ padding: "20px" }}>
                 <FormControl style={{ width: "225px" }}>
                     <InputLabel>State</InputLabel>
                     <Select label="State" value={s.stateName} onChange={(e) => { let data = [...statesVisited]; data[index].stateName = e.target.value; setStatesVisited(data); console.log(statesVisited) }}>
@@ -21,12 +21,15 @@ const State = ({ s, index, states, setStatesVisited, statesVisited }) => {
                         })}
                     </Select>
 
-
                 </FormControl>
+
+                <InputLabel>How long you lived in the state (in months)</InputLabel>
                 <InputNumber min={0} value={s.durationLived}
                     showButtons
                     placeholder='Duration Lived'
                     onChange={(e) => { let data = [...statesVisited]; data[index].durationLived = e.value; setStatesVisited(data); console.log(statesVisited) }} />
+
+
             </Box>
         </div>
     )

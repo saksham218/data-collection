@@ -13,12 +13,15 @@ import { Radio, RadioGroup, FormControlLabel, FormLabel } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { InputNumber } from 'primereact/inputnumber';
+var randomstring = require("randomstring");
 
 const Home = () => {
 
     const navigate = useNavigate();
-    const [name, setName] = useState("");
-    const [gender, setGender] = useState("");
+    // const [name, setName] = useState("");
+    const [gender, setGender] = useState("female");
+    const [age, setAge] = useState(0);
     const [dob, setDob] = useState(null);
     // const [state, setState] = useState("");
     // const [videoBlob, setVideoBlob] = useState(null);
@@ -30,8 +33,11 @@ const Home = () => {
 
     const [statesVisited, setStatesVisited] = useState([]);
     const [languagesSpoken, setLanguagesSpoken] = useState([]);
-    const [languageBlobs, setLanguageBlobs] = useState([]);
-    const [imageBlobs, setImageBlobs] = useState([null, null, null]);
+    const [controlledLanguageBlobs, setControlledLanguageBlobs] = useState([]);
+    const [ownLanguageBlobs, setOwnLanguageBlobs] = useState([]);
+    // const [imageBlobs, setImageBlobs] = useState([null, null, null]);
+
+    const [step, setStep] = useState(1);
 
     const states = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh',
         'Jharkhand', 'Karnataka', 'Kearla', 'Madya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan',
@@ -39,14 +45,32 @@ const Home = () => {
 
     const languages = ['Hindi', 'English', 'Tamil', 'Telugu', 'Kannada', 'Malayalam', 'Marathi', 'Gujarati', 'Bengali', 'Odia', 'Punjabi', 'Assamese', 'Kashmiri', 'Sindhi', 'Urdu', 'Konkani', 'Manipuri', 'Nepali', 'Bodo', 'Dogri', 'Maithili', 'Santali', 'Sanskrit', 'Sindhi', 'Urdu']
 
-    const images = ['Front', 'Left', 'Right'];
+    // const images = ['Front', 'Left', 'Right'];
 
-    const submitImages = async () => {
-        console.log("images: ", imageBlobs)
-        const imageRes = await Promise.all(imageBlobs.map(async (blob, index) => {
+    // const submitImages = async () => {
+    //     console.log("images: ", imageBlobs)
+    //     const imageRes = await Promise.all(imageBlobs.map(async (blob, index) => {
+    //         if (blob) {
+    //             const formData = new FormData();
+    //             const file = new File([blob], name + images[index] + 'Image');
+    //             formData.append("file", file);
+    //             const res = await postBlob(formData);
+    //             return res.data;
+    //         }
+    //         else {
+    //             return null;
+    //         }
+    //     }));
+    //     console.log("imageRes", imageRes);
+    //     return imageRes;
+    // }
+
+    const submitControlledLanguageBlobs = async () => {
+        console.log("controlledLanguageBlobs: ", controlledLanguageBlobs)
+        const controlledLanguageRes = await Promise.all(controlledLanguageBlobs.map(async (blob, index) => {
             if (blob) {
                 const formData = new FormData();
-                const file = new File([blob], name + images[index] + 'Image');
+                const file = new File([blob], languagesSpoken[index].languageName + "controlled" + languagesSpoken[index].mode);
                 formData.append("file", file);
                 const res = await postBlob(formData);
                 return res.data;
@@ -55,16 +79,16 @@ const Home = () => {
                 return null;
             }
         }));
-        console.log("imageRes", imageRes);
-        return imageRes;
+        console.log("controlledLanguageRes", controlledLanguageRes);
+        return controlledLanguageRes;
     }
 
-    const submitLanguageBlobs = async () => {
-        console.log("languageBlobs: ", languageBlobs)
-        const languageRes = await Promise.all(languageBlobs.map(async (blob, index) => {
+    const submitOwnLanguageBlobs = async () => {
+        console.log("ownLanguageBlobs: ", ownLanguageBlobs)
+        const ownLanguageRes = await Promise.all(ownLanguageBlobs.map(async (blob, index) => {
             if (blob) {
                 const formData = new FormData();
-                const file = new File([blob], name + languagesSpoken[index].languageName + languagesSpoken[index].mode);
+                const file = new File([blob], languagesSpoken[index].languageName + "own" + languagesSpoken[index].mode);
                 formData.append("file", file);
                 const res = await postBlob(formData);
                 return res.data;
@@ -73,24 +97,18 @@ const Home = () => {
                 return null;
             }
         }));
-        console.log("languageRes", languageRes);
-        return languageRes;
+        console.log("ownLanguageRes", ownLanguageRes);
+        return ownLanguageRes;
     }
+
     const submitData = async () => {
-        submitImages().then((imageRes) => {
-            console.log("imageRes", imageRes);
-            submitLanguageBlobs().then((languageRes) => {
-                console.log("languageRes", languageRes);
+        // submitImages().then((imageRes) => {
+        //     console.log("imageRes", imageRes);
+        submitControlledLanguageBlobs().then((controlledLanguageRes) => {
+            console.log("controlledLanguageRes", controlledLanguageRes);
 
-                let imagesData = {
-                    frontImageBlobId: imageRes[0] ? imageRes[0].id : null,
-                    frontImageBlobName: imageRes[0] ? imageRes[0].name : null,
-                    leftImageBlobId: imageRes[1] ? imageRes[1].id : null,
-                    leftImageBlobName: imageRes[1] ? imageRes[1].name : null,
-                    rightImageBlobId: imageRes[2] ? imageRes[2].id : null,
-                    rightImageBlobName: imageRes[2] ? imageRes[2].name : null
-                }
-
+            submitOwnLanguageBlobs().then((ownLanguageRes) => {
+                console.log("ownLangaugeRes", ownLanguageRes);
                 let statesVisitedData = statesVisited.map((s, index) => {
                     return { stateName: s.stateName, durationLived: s.durationLived }
                 })
@@ -101,17 +119,25 @@ const Home = () => {
                         proficiency: l.proficiency,
                         learnedInState: l.learnedInState,
                         mode: l.mode,
-                        languageBlobId: languageRes[index] ? languageRes[index].id : null,
-                        languageBlobName: languageRes[index] ? languageRes[index].name : null
+                        // languageBlobId: languageRes[index] ? languageRes[index].id : null,
+                        // languageBlobName: languageRes[index] ? languageRes[index].name : null
+                        controlledLanguageBlobId: controlledLanguageRes[index] ? controlledLanguageRes[index].id : null,
+                        controlledLanguageBlobName: controlledLanguageRes[index] ? controlledLanguageRes[index].name : null,
+
+                        ownLanguageBlobId: ownLanguageRes[index] ? ownLanguageRes[index].id : null,
+                        ownLanguageBlobName: ownLanguageRes[index] ? ownLanguageRes[index].name : null,
+
                     }
                 })
-
-
+                let submissionId = randomstring.generate({ length: 5, charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' })
+                console.log("submissionId", submissionId)
                 const metadata = {
-                    name: name,
-                    dateOfBirth: dob,
+                    submissionId: submissionId,
+                    // name: name,
+                    // dateOfBirth: dob,
+                    age: age,
                     gender: gender,
-                    images: imagesData,
+                    // images: imagesData,
                     states: statesVisitedData,
                     languages: languagesSpokenData,
                 }
@@ -122,7 +148,19 @@ const Home = () => {
                     // navigate('/thankyou');
                 });
             })
+
+            // let imagesData = {
+            //     frontImageBlobId: imageRes[0] ? imageRes[0].id : null,
+            //     frontImageBlobName: imageRes[0] ? imageRes[0].name : null,
+            //     leftImageBlobId: imageRes[1] ? imageRes[1].id : null,
+            //     leftImageBlobName: imageRes[1] ? imageRes[1].name : null,
+            //     rightImageBlobId: imageRes[2] ? imageRes[2].id : null,
+            //     rightImageBlobName: imageRes[2] ? imageRes[2].name : null
+            // }
+
+
         })
+        // })
     }
     // const submitBlob = async (blob, name) => {
 
@@ -164,7 +202,7 @@ const Home = () => {
         <div>
             <Link to="/aboutus">About Us</Link>
             <h1>Data Collection Platform</h1>
-            <TextField label="Name" gutterBottom value={name} onChange={(e) => { setName(e.target.value) }} />
+            {/* <TextField label="Name" gutterBottom value={name} onChange={(e) => { setName(e.target.value) }} /> */}
             <Box>
                 <FormControl>
                     <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
@@ -181,7 +219,7 @@ const Home = () => {
                 </FormControl>
             </Box>
 
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                     label="Date of Birth"
                     format="DD/MM/YYYY"
@@ -194,7 +232,14 @@ const Home = () => {
                     renderInput={(params) => <TextField {...params} />
                     }
                 />
-            </LocalizationProvider>
+            </LocalizationProvider> */}
+
+            <Typography>Enter Age in years</Typography>
+
+            <InputNumber min={0} value={age}
+                showButtons
+                placeholder='Age in years'
+                onChange={(e) => { setAge(e.value); }} />
 
             {/* <Box >
                 <FormControl style={{ width: "225px" }}>
@@ -205,9 +250,9 @@ const Home = () => {
                 </FormControl>
             </Box> */}
 
-            <Box>
+            {/* <Box>
                 {images.map((i, index) => <Box><Typography variant='h2'>{i} Image</Typography><ImageCapturer index={index} imageBlobs={imageBlobs} setImageBlobs={setImageBlobs} /></Box>)}
-            </Box>
+            </Box> */}
 
 
             <Box>
@@ -225,8 +270,8 @@ const Home = () => {
             </Button> */}
 
             <Box>
-                {languagesSpoken.map((l, index) => <Language l={l} index={index} languages={languages} setLanguagesSpoken={setLanguagesSpoken} languagesSpoken={languagesSpoken} statesVisited={statesVisited} states={states} languageBlobs={languageBlobs} setLanguageBlobs={setLanguageBlobs} />)}
-                <Button variant="contained" color="primary" onClick={() => { setLanguagesSpoken([...languagesSpoken, { languageName: '', proficiency: '', mode: '', learnedInState: '' }]); setLanguageBlobs([...languageBlobs, null]); }}> Add Language</Button>
+                {languagesSpoken.map((l, index) => <Language l={l} index={index} languages={languages} setLanguagesSpoken={setLanguagesSpoken} languagesSpoken={languagesSpoken} statesVisited={statesVisited} states={states} controlledLanguageBlobs={controlledLanguageBlobs} setControlledLanguageBlobs={setControlledLanguageBlobs} ownLanguageBlobs={ownLanguageBlobs} setOwnLanguageBlobs={setOwnLanguageBlobs} />)}
+                <Button variant="contained" color="primary" onClick={() => { setLanguagesSpoken([...languagesSpoken, { languageName: '', proficiency: '', mode: '', learnedInState: '' }]); setControlledLanguageBlobs([...controlledLanguageBlobs, null]); setOwnLanguageBlobs([...ownLanguageBlobs, null]); }}> Add Language</Button>
             </Box>
 
             <Button variant="contained" color="primary" onClick={submitData}
