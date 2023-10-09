@@ -4,7 +4,7 @@ import { Typography, TextField, Menu, MenuItem, Select, FormControl, InputLabel,
 import VideoRecorder from "./recorders/VideoRecorder";
 import AudioRecorder from "./recorders/AudioRecorder";
 import ImageCapturer from './recorders/ImageCapturer';
-import { postBlob, postMetaData } from '../api';
+import { postBlob, postMetaData, postBlobAzure } from '../api';
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import State from './State';
 import Language from './Language';
@@ -65,15 +65,18 @@ const Home = () => {
     //     return imageRes;
     // }
 
-    const submitControlledLanguageBlobs = async () => {
+
+    const submitControlledLanguageBlobs = async (submissionId) => {
         console.log("controlledLanguageBlobs: ", controlledLanguageBlobs)
         const controlledLanguageRes = await Promise.all(controlledLanguageBlobs.map(async (blob, index) => {
             if (blob) {
-                const formData = new FormData();
-                const file = new File([blob], languagesSpoken[index].languageName + "CONTROLLED" + languagesSpoken[index].mode);
-                formData.append("file", file);
-                const res = await postBlob(formData);
-                return res.data;
+                // const formData = new FormData();
+                // const file = new File([blob], languagesSpoken[index].languageName + "CONTROLLED" + languagesSpoken[index].mode);
+                // formData.append("file", file);
+                // const res = await postBlob(formData);
+                const blobName = submissionId + "CONTROLLED" + languagesSpoken[index].languageName;
+                const res = await postBlobAzure(blob, blobName);
+                return blobName;
             }
             else {
                 return null;
@@ -83,15 +86,17 @@ const Home = () => {
         return controlledLanguageRes;
     }
 
-    const submitOwnLanguageBlobs = async () => {
+    const submitOwnLanguageBlobs = async (submissionId) => {
         console.log("ownLanguageBlobs: ", ownLanguageBlobs)
         const ownLanguageRes = await Promise.all(ownLanguageBlobs.map(async (blob, index) => {
             if (blob) {
-                const formData = new FormData();
-                const file = new File([blob], languagesSpoken[index].languageName + "OWN" + languagesSpoken[index].mode);
-                formData.append("file", file);
-                const res = await postBlob(formData);
-                return res.data;
+                // const formData = new FormData();
+                // const file = new File([blob], submissionId + "OWN" + languagesSpoken[index].languageName);
+                // formData.append("file", file);
+                // const res = await postBlob(formData);
+                const blobName = submissionId + "OWN" + languagesSpoken[index].languageName;
+                const res = await postBlobAzure(blob, blobName);
+                return blobName;
             }
             else {
                 return null;
@@ -104,10 +109,12 @@ const Home = () => {
     const submitData = async () => {
         // submitImages().then((imageRes) => {
         //     console.log("imageRes", imageRes);
-        submitControlledLanguageBlobs().then((controlledLanguageRes) => {
+        let submissionId = randomstring.generate({ length: 5, charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' })
+        console.log("submissionId", submissionId)
+        submitControlledLanguageBlobs(submissionId).then((controlledLanguageRes) => {
             console.log("controlledLanguageRes", controlledLanguageRes);
 
-            submitOwnLanguageBlobs().then((ownLanguageRes) => {
+            submitOwnLanguageBlobs(submissionId).then((ownLanguageRes) => {
                 console.log("ownLangaugeRes", ownLanguageRes);
                 let statesVisitedData = statesVisited.map((s, index) => {
                     return { stateName: s.stateName, durationLived: s.durationLived }
@@ -118,19 +125,18 @@ const Home = () => {
                         languageName: l.languageName,
                         proficiency: l.proficiency,
                         learnedInState: l.learnedInState,
-                        mode: l.mode,
+                        // mode: l.mode,
                         // languageBlobId: languageRes[index] ? languageRes[index].id : null,
                         // languageBlobName: languageRes[index] ? languageRes[index].name : null
-                        controlledLanguageBlobId: controlledLanguageRes[index] ? controlledLanguageRes[index].id : null,
-                        controlledLanguageBlobName: controlledLanguageRes[index] ? controlledLanguageRes[index].name : null,
+                        // controlledLanguageBlobId: controlledLanguageRes[index] ? controlledLanguageRes[index].id : null,
+                        controlledLanguageBlobName: controlledLanguageRes[index],
 
-                        ownLanguageBlobId: ownLanguageRes[index] ? ownLanguageRes[index].id : null,
-                        ownLanguageBlobName: ownLanguageRes[index] ? ownLanguageRes[index].name : null,
+                        // ownLanguageBlobId: ownLanguageRes[index] ? ownLanguageRes[index].id : null,
+                        ownLanguageBlobName: ownLanguageRes[index],
 
                     }
                 })
-                let submissionId = randomstring.generate({ length: 5, charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' })
-                console.log("submissionId", submissionId)
+
                 const metadata = {
                     submissionId: submissionId,
                     // name: name,

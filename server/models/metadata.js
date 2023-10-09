@@ -30,13 +30,13 @@ const metadataSchema = mongoose.Schema({
         languageName: String,
         proficiency: String,
         learnedInState: String,
-        mode: String,
+        // mode: String,
         // languageBlobId: String,
         // languageBlobName: String
-        controlledLanguageBlobId: String,
+        // controlledLanguageBlobId: String,
         controlledLanguageBlobName: String,
 
-        ownLanguageBlobId: String,
+        // ownLanguageBlobId: String,
         ownLanguageBlobName: String,
     }],
 });

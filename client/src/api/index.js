@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const baseURL = 'http://localhost:5000';
-const baseURL = 'https://data-collection-backend.onrender.com';
+const baseURL = process.env.REACT_APP_BASEURL;
 const client = axios.create({
     baseURL: baseURL
 
@@ -30,4 +30,21 @@ export const postBlob = async (data) => {
             }
         })
 }
+
+export const postBlobAzure = async (blob, name) => {
+
+    const storageAccountName = process.env.REACT_APP_STORAGE_ACCOUNT_NAME
+    const containerName = process.env.REACT_APP_CONTAINER_NAME;
+    const sasToken = process.env.REACT_APP_SAS_TOKEN;
+
+    const uploadUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${name}${sasToken}`;
+
+    return axios.put(uploadUrl, blob, {
+        headers: {
+            'x-ms-blob-type': 'BlockBlob',
+            'Content-Type': blob.type,
+        }
+    });
+}
+
 
