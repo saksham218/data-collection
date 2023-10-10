@@ -95,7 +95,7 @@ const AudioRecorder = ({
 
     return (
         <div>
-            <h2>Audio Recorder</h2>
+            {/* <h2>Audio Recorder</h2> */}
             <main>
                 <div className="audio-controls">
                     {!permission ? (

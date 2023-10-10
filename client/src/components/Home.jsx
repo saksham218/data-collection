@@ -151,7 +151,7 @@ const Home = () => {
                 console.log("metadata", metadata);
                 const metaadataRes = postMetaData(metadata).then((res) => {
                     console.log("metaadataRes", res.data);
-                    // navigate('/thankyou');
+                    navigate('/thankyou');
                 });
             })
 
@@ -255,7 +255,9 @@ const Home = () => {
                     showButtons
                     placeholder='Age in years'
                     onChange={(e) => { setAge(e.value); }} />
-                <Button variant="contained" color="primary" onClick={nextStep}> Next</Button>
+                <Box>
+                    <Button variant="contained" color="primary" onClick={nextStep}> Next</Button>
+                </Box>
             </Box> : null}
 
             {/* <Box >
@@ -276,12 +278,12 @@ const Home = () => {
                 {statesVisited.map((s, index) => <State s={s} index={index} states={states} setStatesVisited={setStatesVisited} statesVisited={statesVisited} />)}
                 <Button variant="contained" color="primary" disabled={(statesVisited.length > 0 && statesVisited[statesVisited.length - 1].stateName === "") ? true : false}
                     onClick={() => setStatesVisited([...statesVisited, { stateName: "", durationLived: 0 }])}> Add State</Button>
-
-                <Button variant="contained" color="primary" onClick={prevStep}> Previous</Button>
-                <Button variant="contained" color="primary" onClick={nextStep}
-                    disabled={(statesVisited.map(s => { return s.stateName }).includes("")) ? true : false}
-                > Next</Button>
-
+                <Box style={{ 'padding': '20px' }}>
+                    <Button variant="contained" color="primary" style={{ 'marginRight': '10px' }} onClick={prevStep}> Previous</Button>
+                    <Button variant="contained" color="primary" style={{ 'marginLeft': '10px' }} onClick={nextStep}
+                        disabled={(statesVisited.length === 0 || statesVisited.map(s => { return s.stateName }).includes("")) ? true : false}
+                    > Next</Button>
+                </Box>
             </Box> : null}
 
             {/* 
@@ -293,22 +295,28 @@ const Home = () => {
                 Submit
             </Button> */}
 
-            {step === 3 ? <Box><Box>
-                {languagesSpoken.map((l, index) => <Language l={l} index={index} proficiencies={proficiencies} languages={languages} setLanguagesSpoken={setLanguagesSpoken} languagesSpoken={languagesSpoken} statesVisited={statesVisited} states={states} controlledLanguageBlobs={controlledLanguageBlobs} setControlledLanguageBlobs={setControlledLanguageBlobs} ownLanguageBlobs={ownLanguageBlobs} setOwnLanguageBlobs={setOwnLanguageBlobs} />)}
-                <Button variant="contained" color="primary"
-                    disabled={languagesSpoken.length > 0 && (languagesSpoken[languagesSpoken.length - 1].languageName === ""
-                        || languagesSpoken[languagesSpoken.length - 1].proficiency === ""
-                        || languagesSpoken[languagesSpoken.length - 1].learnedInState === ""
-                        || (languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[1] && ownLanguageBlobs[ownLanguageBlobs.length - 1] === null)
-                        || ((languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[2] || languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[3])
-                            && (ownLanguageBlobs[ownLanguageBlobs.length - 1] === null || controlledLanguageBlobs[controlledLanguageBlobs.length - 1] === null))) ? true : false}
-                    onClick={() => { setLanguagesSpoken([...languagesSpoken, { languageName: '', proficiency: '', mode: '', learnedInState: '' }]); setControlledLanguageBlobs([...controlledLanguageBlobs, null]); setOwnLanguageBlobs([...ownLanguageBlobs, null]); }}> Add Language</Button>
-            </Box>
+            {step === 3 ? <Box>
+                <Box>
+                    {languagesSpoken.map((l, index) => <Language l={l} index={index} proficiencies={proficiencies} languages={languages} setLanguagesSpoken={setLanguagesSpoken} languagesSpoken={languagesSpoken} statesVisited={statesVisited} states={states} controlledLanguageBlobs={controlledLanguageBlobs} setControlledLanguageBlobs={setControlledLanguageBlobs} ownLanguageBlobs={ownLanguageBlobs} setOwnLanguageBlobs={setOwnLanguageBlobs} />)}
+                    <Button variant="contained" color="primary"
+                        disabled={languagesSpoken.length > 0 && (languagesSpoken[languagesSpoken.length - 1].languageName === ""
+                            || languagesSpoken[languagesSpoken.length - 1].proficiency === ""
+                            || languagesSpoken[languagesSpoken.length - 1].learnedInState === ""
+                            || (languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[1] && ownLanguageBlobs[ownLanguageBlobs.length - 1] === null)
+                            || ((languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[2] || languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[3])
+                                && (ownLanguageBlobs[ownLanguageBlobs.length - 1] === null || controlledLanguageBlobs[controlledLanguageBlobs.length - 1] === null))) ? true : false}
+                        onClick={() => { setLanguagesSpoken([...languagesSpoken, { languageName: '', proficiency: '', mode: '', learnedInState: '' }]); setControlledLanguageBlobs([...controlledLanguageBlobs, null]); setOwnLanguageBlobs([...ownLanguageBlobs, null]); }}> Add Language</Button>
+                </Box>
 
-                <Button variant="contained" color="primary" onClick={prevStep}> Previous</Button>
-                <Button variant="contained" color="primary" onClick={submitData}
+                <Box style={{ 'padding': '20px' }}>
+
+                    <Button variant="contained" color="primary" onClick={prevStep}
+                    // style={{ 'marginRight': '200px' }}
+                    > Previous</Button>
+                </Box>
+                <Button variant="contained" color="primary" onClick={submitData} style={{ 'margin': '5px' }}
                     // disabled={(isVideo && isAudio && isImage && name !== "" && state !== "") ? false : true}
-                    disabled={languagesSpoken.length > 0 && ((languagesSpoken.map(l => { return l.languageName }).includes("")
+                    disabled={languagesSpoken.length === 0 || ((languagesSpoken.map(l => { return l.languageName }).includes("")
                         || languagesSpoken.map(l => { return l.proficiency }).includes("")
                         || languagesSpoken.map(l => { return l.learnedInState }).includes("")
                         || (languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[1] && ownLanguageBlobs[ownLanguageBlobs.length - 1] === null)

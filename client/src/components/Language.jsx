@@ -27,6 +27,19 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
                     </Select>
                 </FormControl>
                 <FormControl style={{ width: "225px" }}>
+                    <InputLabel>Learned In State</InputLabel>
+                    <Select label="Learned In State" value={l.learnedInState} onChange={(e) => {
+                        let data = [...languagesSpoken];
+                        data[index].learnedInState = e.target.value; setLanguagesSpoken(data); console.log(languagesSpoken)
+                    }}>
+                        {states.map(st => {
+
+                            return <MenuItem style={{ display: availableStates.includes(st) ? "block" : "none" }} value={st}>{st}</MenuItem>
+
+                        })}
+                    </Select>
+                </FormControl>
+                <FormControl style={{ width: "225px" }}>
                     <InputLabel>Proficiency</InputLabel>
                     <Select label="Proficiency" value={l.proficiency} onChange={(e) => {
                         let data = [...languagesSpoken];
@@ -61,19 +74,7 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
                         })}
                     </Select>
                 </FormControl>
-                <FormControl style={{ width: "225px" }}>
-                    <InputLabel>Learned In State</InputLabel>
-                    <Select label="Learned In State" value={l.learnedInState} onChange={(e) => {
-                        let data = [...languagesSpoken];
-                        data[index].learnedInState = e.target.value; setLanguagesSpoken(data); console.log(languagesSpoken)
-                    }}>
-                        {states.map(st => {
 
-                            return <MenuItem style={{ display: availableStates.includes(st) ? "block" : "none" }} value={st}>{st}</MenuItem>
-
-                        })}
-                    </Select>
-                </FormControl>
 
                 {/* 
 
@@ -108,7 +109,7 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
 
 
 
-                <Recorder mode={l.mode} index={index} proficiencies={proficiencies} proficiency={l.proficiency} controlledLanguageBlobs={controlledLanguageBlobs} setControlledLanguageBlobs={setControlledLanguageBlobs} ownLanguageBlobs={ownLanguageBlobs} setOwnLanguageBlobs={setOwnLanguageBlobs} />
+                <Recorder language={l.languageName} learnedInState={l.learnedInState} index={index} proficiencies={proficiencies} proficiency={l.proficiency} controlledLanguageBlobs={controlledLanguageBlobs} setControlledLanguageBlobs={setControlledLanguageBlobs} ownLanguageBlobs={ownLanguageBlobs} setOwnLanguageBlobs={setOwnLanguageBlobs} />
 
             </Box>
 
