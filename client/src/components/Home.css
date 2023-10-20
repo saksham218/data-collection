@@ -1,48 +1,103 @@
-#nav-list {
-    margin-top: 50px;
-    display: flex;
-    background-color: white;
-    height: 30px;
-    border: 0px;
-    z-index: 5;
-    /* top: 1000; */
-    padding-top: 25px;
-    padding-left: 450px
+/* styles for lg size */
+@media (min-width: 992px) {
+    #nav-list {
+        margin-top: 50px;
+        display: flex;
+        background-color: white;
+        height: 30px;
+        border: 0px;
+        z-index: 5;
+        /* top: 1000; */
+        padding-top: 25px;
+        padding-left: 450px
+    }
+
+    #nav-list li {
+        list-style-type: none;
+        padding: 20px;
+        border-radius: 10px;
+        transition: background 1s;
+        color: grey;
+        font-weight: 500;
+        font-size: 20px
+    }
+
+    #nav-list li:hover {
+        cursor: pointer;
+        /*underlne*/
+
+    }
+
+    .theme {
+        padding: 13px;
+        margin: 13px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    #normal {
+        background-color: #fff;
+    }
+
+    #dark {
+        background-color: #000;
+        color: #fff;
+    }
+
+    .theme:hover {
+        cursor: pointer;
+    }
 }
 
-#nav-list li {
-    list-style-type: none;
-    padding: 20px;
-    border-radius: 10px;
-    transition: background 1s;
-    color: grey;
-    font-weight: 500;
-    font-size: 20px
-}
+/* styles for sm size */
+@media (max-width: 991px) {
+    #nav-list {
+        margin-top: 50px;
+        display: flex;
+        background-color: white;
+        height: 30px;
+        border: 0px;
+        z-index: 5;
+        /* top: 1000; */
+        padding-top: 25px;
+        padding-left: 100px
+    }
 
-#nav-list li:hover {
-    cursor: pointer;
-    /*underlne*/
+    #nav-list li {
+        list-style-type: none;
+        padding: 20px;
+        border-radius: 10px;
+        transition: background 1s;
+        color: grey;
+        font-weight: 500;
+        font-size: 20px
+    }
 
-}
+    #nav-list li:hover {
+        cursor: pointer;
+        /*underlne*/
 
-.theme {
-    padding: 13px;
-    margin: 13px;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-}
+    }
 
-#normal {
-    background-color: #fff;
-}
+    .theme {
+        padding: 13px;
+        margin: 13px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+    }
 
-#dark {
-    background-color: #000;
-    color: #fff;
-}
+    #normal {
+        background-color: #fff;
+    }
 
-.theme:hover {
-    cursor: pointer;
+    #dark {
+        background-color: #000;
+        color: #fff;
+    }
+
+    .theme:hover {
+        cursor: pointer;
+    }
 }
