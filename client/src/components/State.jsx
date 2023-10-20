@@ -11,7 +11,7 @@ const State = ({ s, index, states, setStatesVisited, statesVisited }) => {
     return (
         <div>
             <Box style={{ 'paddingTop': "20px", 'marginBottom': '20px', 'backgroundColor': '#9eecff', 'width': '400px', 'height': '250px', 'borderRadius': '10px' }}
-                sx={{ ml: { xs: '50px', md: '400px', lg: '450px' } }}>
+                sx={{ ml: { xs: '25px', md: '400px', lg: '450px' } }}>
                 <FormControl style={{ width: "225px" }}>
 
                     <Typography style={{ 'fontSize': '20px', 'fontWeight': '1000' }}>State</Typography>

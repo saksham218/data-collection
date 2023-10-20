@@ -221,19 +221,29 @@ const Home = () => {
 
     return (
         <div>
-            <CircularProgress style={{ 'margin': '200px', 'marginLeft': '600px', 'display': submitting ? 'block' : 'none' }} />
+            <CircularProgress style={{ 'display': submitting ? 'block' : 'none' }}
+                sx={{ margin: { xs: '225px', md: '200px', lg: '200px' }, ml: { xs: '115px', md: '500px', lg: '600px' } }}
+            />
             <Box style={{ 'display': !submitting ? 'block' : 'none' }}
                 sx={{ width: { xs: '650px', md: '900px', lg: '1150px' } }}>
-                <Box xs={{ ml: { xs: '0px' } }}>
+                <Box >
 
 
 
-                    <Button style={{ 'fontSize': '25px', 'color': 'black', 'fontWeight': '400' }}
-                        sx={{ pl: { xs: '0px', md: '75px', lg: '150px' }, ml: { xs: '0px' } }}
-                    >Data Collection Platform </Button>
+                    {/* <Typography style={{
+                        'color': 'black', 'fontWeight': '600', 'fontFamily': "'Quicksand', sans-serif",
+                    }}
+                        sx={{ pl: { xs: '0px', md: '75px', lg: '150px' }, left: { xs: '0px' }, fontSize: { xs: "25px", md: "28px", lg: '30px' } }}
+                    >Data Collection Platform </Typography> */}
+
                     {/* <Button to="/aboutus"
                         style={{ 'top': '0', 'right': '0' }}
                     >ABOUT US</Button> */}
+
+                    <Box sx={{ ml: { xs: '60px', md: '250px', lg: '475px' }, mt: '10px' }} >
+                        <Typography variant='h2' style={{ 'textAlign': 'left', 'fontWeight': '600', 'fontFamily': "'Quicksand', sans-serif" }} sx={{ fontSize: { xs: "25px", md: "28px", lg: '30px' } }}>Data Collection Platform</Typography>
+                    </Box>
+
 
                     <Box sx={{ mt: '10px', pl: { sm: '0px', md: '250px', lg: '300px' } }}>
                         <AppBar style={{ 'backgroundColor': 'white', 'zIndex': '0', 'height': '0px', 'position': 'absolute' }}>
@@ -252,8 +262,8 @@ const Home = () => {
                 {
                     step === 1 ?
                         <Box style={{ 'marginBottom': '10px' }}>
-                            <Box style={{ 'backgroundColor': '#9eecff', 'width': '400px', 'height': '325px', 'marginTop': '100px', 'borderRadius': '10px', 'paddingBottom': '10px', 'paddingTop': '10px' }}
-                                sx={{ ml: { xs: '50px', md: '400px', lg: '450px' } }}>
+                            <Box style={{ 'backgroundColor': '#9eecff', 'height': '325px', 'marginTop': '100px', 'borderRadius': '10px', 'paddingBottom': '10px', 'paddingTop': '10px' }}
+                                sx={{ ml: { xs: '25px', md: '400px', lg: '450px' }, width: { xs: '350px', md: '375px', lg: '400px' } }}>
                                 <Box>
                                     <FormControl >
                                         <FormLabel id="demo-radio-buttons-group-label" style={{ 'color': 'black', 'fontSize': '20px', 'fontWeight': '1000', }}>Gender</FormLabel>
@@ -281,7 +291,7 @@ const Home = () => {
                                         onChange={(e) => { setAge(e.value); }} />
                                 </Box>
                             </Box>
-                            <Box sx={{ pl: { xs: '105px', md: '25px', lg: '150px' } }}>
+                            <Box sx={{ pl: { xs: '35px', md: '115px', lg: '150px' } }}>
                                 <Button variant="contained" color="primary" onClick={nextStep}
                                     style={{ 'marginTop': '20px' }}
 
@@ -307,10 +317,10 @@ const Home = () => {
 
                 {
                     step === 2 ?
-                        <Box style={{ 'paddingTop': '100px' }}>
+                        <Box style={{ 'paddingTop': '80px' }}>
                             <Box>
                                 <Box style={{ 'position': 'fixed', 'marginTop': '10px' }}
-                                    sx={{ ml: { xs: '500px', md: '400px', lg: '900px' } }}>
+                                    sx={{ ml: { xs: '450px', md: '600px', lg: '900px' } }}>
                                     <Button variant="contained" color="primary" disabled={(statesVisited.length > 0 && (statesVisited[statesVisited.length - 1].stateName === "" || statesVisited[statesVisited.length - 1].durationLived === "")) ? true : false}
                                         onClick={() => setStatesVisited([...statesVisited, { stateName: "", durationLived: '' }])}>
                                         Add State</Button>
@@ -337,10 +347,10 @@ const Home = () => {
 
                 {
                     step === 3 ?
-                        <Box style={{ 'paddingTop': '100px' }}>
+                        <Box style={{ 'paddingTop': '80px' }}>
                             <Box>
                                 <Box style={{ 'position': 'fixed' }}
-                                    sx={{ ml: { xs: '500px', md: '700px', lg: '1050px' }, mt: '10px' }}>
+                                    sx={{ ml: { xs: '450px', md: '700px', lg: '1050px' }, mt: '10px' }}>
                                     <Button variant="contained" color="primary"
                                         disabled={languagesSpoken.length > 0 && (languagesSpoken[languagesSpoken.length - 1].languageName === ""
                                             || languagesSpoken[languagesSpoken.length - 1].proficiency === ""
@@ -377,7 +387,7 @@ const Home = () => {
                         </Box> : null
                 }
             </Box>
-        </div>
+        </div >
     );
 }
 

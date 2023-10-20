@@ -8,8 +8,8 @@
         border: 0px;
         z-index: 5;
         /* top: 1000; */
-        padding-top: 25px;
-        padding-left: 450px
+        padding-top: 5px;
+        padding-left: 500px
     }
 
     #nav-list li {
@@ -60,8 +60,8 @@
         border: 0px;
         z-index: 5;
         /* top: 1000; */
-        padding-top: 25px;
-        padding-left: 100px
+        padding-top: 5px;
+        padding-left: 40px
     }
 
     #nav-list li {
