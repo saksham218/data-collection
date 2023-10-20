@@ -15,10 +15,15 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
     return (
 
         <div>
-            <Box style={{ padding: "20px" }}>
-                <FormControl style={{ width: "225px" }}>
-                    <InputLabel>Language</InputLabel>
-                    <Select label="Language" value={l.languageName} onChange={(e) => { let data = [...languagesSpoken]; data[index].languageName = e.target.value; setLanguagesSpoken(data); console.log(languagesSpoken) }}>
+            <Box style={{
+                'paddingTop': "20px", 'marginBottom': '20px', 'marginLeft': '225px', 'backgroundColor': '#9eecff', 'width': '800px',
+                'height': (index <= 2 && (l.proficiency === proficiencies[2] || l.proficiency === proficiencies[3]) ? '550px' : ((index > 2 || l.proficiency === proficiencies[0]) ? '200px' : '300px')),
+                'borderRadius': '10px'
+            }}>
+                <FormControl style={{ 'width': "225px", 'marginRight': '10px' }}>
+                    <Typography style={{ 'fontSize': '20px', 'fontWeight': '1000' }}>Language</Typography>
+                    {/* <InputLabel>Language</InputLabel> */}
+                    <Select style={{ 'backgroundColor': 'white' }} value={l.languageName} onChange={(e) => { let data = [...languagesSpoken]; data[index].languageName = e.target.value; setLanguagesSpoken(data); console.log(languagesSpoken) }}>
                         {languages.map(la => {
 
                             return <MenuItem style={{ display: availableLanguages.includes(la) ? "block" : "none" }} value={la}>{la}</MenuItem>
@@ -26,9 +31,10 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
                         })}
                     </Select>
                 </FormControl>
-                <FormControl style={{ width: "225px" }}>
-                    <InputLabel>Learned In State</InputLabel>
-                    <Select label="Learned In State" value={l.learnedInState} onChange={(e) => {
+                <FormControl style={{ 'width': "225px", 'marginRight': '10px' }}>
+                    <Typography style={{ 'fontSize': '20px', 'fontWeight': '1000' }}>Learned In State</Typography>
+                    {/* <InputLabel>Learned In State</InputLabel> */}
+                    <Select style={{ 'backgroundColor': 'white' }} value={l.learnedInState} onChange={(e) => {
                         let data = [...languagesSpoken];
                         data[index].learnedInState = e.target.value; setLanguagesSpoken(data); console.log(languagesSpoken)
                     }}>
@@ -39,9 +45,11 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
                         })}
                     </Select>
                 </FormControl>
-                <FormControl style={{ width: "225px" }}>
-                    <InputLabel>Proficiency</InputLabel>
-                    <Select label="Proficiency" value={l.proficiency} onChange={(e) => {
+                <FormControl style={{ 'width': "225px" }}>
+                    <Typography style={{ 'fontSize': '20px', 'fontWeight': '1000' }}>Proficiency</Typography>
+                    {/* <InputLabel>Learned In State</InputLabel> */}
+                    {/* <InputLabel>Proficiency</InputLabel> */}
+                    <Select style={{ 'backgroundColor': 'white' }} value={l.proficiency} onChange={(e) => {
                         let data = [...languagesSpoken];
                         data[index].proficiency = e.target.value; setLanguagesSpoken(data);
                         console.log(languagesSpoken);
