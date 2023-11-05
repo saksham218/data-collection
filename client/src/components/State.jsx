@@ -1,7 +1,9 @@
-import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material'
+import { Box, FormControl, Input, InputLabel, MenuItem, Select, Typography } from '@mui/material'
 // import { Unstable_NumberInput as NumberInput } from '@mui/base';
 import { InputNumber } from 'primereact/inputnumber';
 import React from 'react'
+
+import './State.css'
 
 const State = ({ s, index, states, setStatesVisited, statesVisited }) => {
 
@@ -10,12 +12,17 @@ const State = ({ s, index, states, setStatesVisited, statesVisited }) => {
 
     return (
         <div>
-            <Box style={{ 'paddingTop': "20px", 'marginBottom': '20px', 'backgroundColor': '#9eecff', 'width': '400px', 'height': '250px', 'borderRadius': '10px' }}
+            <Box style={{ 'paddingTop': "20px", 'marginBottom': '20px', 'backgroundColor': '#dedede', 'width': '400px', 'height': '300px', 'borderRadius': '10px' }}
                 sx={{ ml: { xs: '25px', md: '400px', lg: '450px' } }}>
                 <FormControl style={{ width: "225px" }}>
 
                     <Typography style={{ 'fontSize': '20px', 'fontWeight': '1000' }}>State</Typography>
-                    <Select style={{ 'backgroundColor': 'white', 'borderColor': 'black' }} value={s.stateName} onChange={(e) => { let data = [...statesVisited]; data[index].stateName = e.target.value; setStatesVisited(data); console.log(statesVisited) }}>
+                    <Select style={{
+                        'backgroundColor': '#dedede',
+                        'borderBottom': '2px solid black'
+                        // 'border': 'none'
+                    }}
+                        value={s.stateName} onChange={(e) => { let data = [...statesVisited]; data[index].stateName = e.target.value; setStatesVisited(data); console.log(statesVisited) }}>
                         {states.map(st => {
 
                             return <MenuItem style={{ display: availableStates.includes(st) ? "block" : "none" }} value={st}>{st}</MenuItem>
@@ -24,13 +31,24 @@ const State = ({ s, index, states, setStatesVisited, statesVisited }) => {
                     </Select>
 
                 </FormControl>
+                <FormControl style={{ 'paddingTop': '20px' }}>
+                    <Typography style={{ 'fontSize': '20px', 'fontWeight': '1000' }}>District</Typography>
+                    <Input type='text' value={s.district}
 
-                <Typography style={{ 'paddingTop': '20px', 'color': 'black', 'fontSize': '20px', 'fontWeight': '1000' }}>How long you lived in the state <Typography style={{ 'fontWeight': '300' }}>(in years)</Typography></Typography>
+                        classes={{ focused: 'custom-focused-input' }}
+
+                        onChange={(e) => { let data = [...statesVisited]; data[index].district = e.target.value; setStatesVisited(data); console.log(statesVisited) }} />
+                </FormControl>
+
+
+                <Typography style={{ 'paddingTop': '20px', 'color': 'black', 'fontSize': '20px', 'fontWeight': '1000' }}>How long you lived in the state <Typography style={{ 'fontWeight': '300' }}></Typography></Typography>
                 {/* <InputLabel >How long you lived in the state (in years)</InputLabel> */}
-                <InputNumber min={0} value={s.durationLived}
-                    showButtons
+                <Input type='number' min={0} value={s.durationLived}
+                    // showButtons
                     // placeholder='Duration Lived'
-                    onChange={(e) => { let data = [...statesVisited]; data[index].durationLived = e.value; setStatesVisited(data); console.log(statesVisited) }} />
+                    classes={{ focused: 'custom-focused-input' }}
+                    placeholder='in years'
+                    onChange={(e) => { let data = [...statesVisited]; data[index].durationLived = e.target.value; setStatesVisited(data); console.log(statesVisited) }} />
 
 
             </Box>

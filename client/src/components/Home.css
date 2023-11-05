@@ -101,3 +101,9 @@
         cursor: pointer;
     }
 }
+
+.custom-focused-input {
+    border-bottom: 2px solid black;
+    outline: red;
+    /* Change the border color when the input is in focus */
+}

@@ -1,6 +1,6 @@
 import React from 'react'
-import { useState, useRef } from "react";
-import { Button } from '@mui/material'
+import { useState, useRef, useEffect } from "react";
+import { Button, Typography, Box } from '@mui/material'
 
 const mimeType = "audio/wav";
 
@@ -17,6 +17,42 @@ const AudioRecorder = ({
     const [audioChunks, setAudioChunks] = useState([]);
     const [audio, setAudio] = useState(null);
     const [ready, setReady] = useState(false);
+    const [count, setCount] = useState(0);
+    const [minutes, setMinutes] = useState(0);
+    const [isRunning, setIsRunning] = useState(false);
+
+    useEffect(() => {
+        let interval;
+
+        if (isRunning) {
+            interval = setInterval(() => {
+                if (count === 59) {
+                    setMinutes((prevMinutes) => prevMinutes + 1);
+                    setCount(0);
+                }
+                else
+                    setCount((prevCount) => prevCount + 1);
+            }, 1000);
+        } else {
+            clearInterval(interval);
+        }
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [count, isRunning]);
+
+    const startTimer = () => {
+        setIsRunning(true);
+    };
+
+    const stopTimer = () => {
+        setIsRunning(false);
+        setCount(0);
+    };
+
+
+
 
     const getMicrophonePermission = async () => {
         if ("MediaRecorder" in window) {
@@ -49,6 +85,7 @@ const AudioRecorder = ({
     };
 
     const startRecording = async () => {
+        startTimer();
         setRecordingStatus("recording");
         //create new Media recorder instance using the stream
         const media = new MediaRecorder(stream, { type: mimeType });
@@ -68,6 +105,7 @@ const AudioRecorder = ({
 
     const stopRecording = () => {
         setRecordingStatus("inactive");
+        stopTimer();
 
         console.log("recording stopped");
         console.log("ready: ", ready);
@@ -92,6 +130,12 @@ const AudioRecorder = ({
         };
     };
 
+    const display = (time) => {
+        if (time < 10)
+            return "0" + time;
+        else
+            return time;
+    }
 
     return (
         <div>
@@ -99,25 +143,26 @@ const AudioRecorder = ({
             <main>
                 <div className="audio-controls">
                     {!permission ? (
-                        <Button onClick={getMicrophonePermission} type="button">
+                        <Button onClick={getMicrophonePermission} type="button" style={{ 'color': 'black' }}>
                             Get Microphone
                         </Button>
                     ) : null}
                     {permission && recordingStatus === "inactive" && ready ?
 
-                        (<Button onClick={startRecording} type="button">
+                        (<Button onClick={startRecording} type="button" style={{ 'color': 'black' }}>
                             Start Recording
                         </Button>) : null}
                     {permission && recordingStatus === "inactive" && !ready ?
-                        (<Button onClick={retake} type="button">Retake</Button>)
+                        (<Button onClick={retake} type="button" style={{ 'color': 'black' }}>Retake</Button>)
                         : null}
                     {recordingStatus === "recording" ? (
-                        <Button onClick={() => {
+                        <Box><Typography>{display(minutes)}:{display(count)}</Typography><Button onClick={() => {
                             setReady(false);
                             stopRecording();
-                        }} type="button">
+
+                        }} type="button" style={{ 'color': 'black' }}>
                             Stop Recording
-                        </Button>
+                        </Button></Box>
                     ) : null}
                     {audio ? (
                         <div className="audio-container">

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from "react";
-import { Typography, TextField, Menu, MenuItem, Select, FormControl, InputLabel, FormGroup, Box, Button, AppBar, CircularProgress } from "@mui/material";
+import { Typography, TextField, Menu, MenuItem, Select, FormControl, InputLabel, FormGroup, Box, Button, AppBar, CircularProgress, Input } from "@mui/material";
 import VideoRecorder from "./recorders/VideoRecorder";
 import AudioRecorder from "./recorders/AudioRecorder";
 import ImageCapturer from './recorders/ImageCapturer';
@@ -36,8 +36,8 @@ const Home = () => {
     // const [isAudio, setIsAudio] = useState(false);
     // const [isImage, setIsImage] = useState(false);
 
-    const [statesVisited, setStatesVisited] = useState([]);
-    const [languagesSpoken, setLanguagesSpoken] = useState([]);
+    const [statesVisited, setStatesVisited] = useState([{ stateName: "", district: "", durationLived: '' }]);
+    const [languagesSpoken, setLanguagesSpoken] = useState([{ languageName: '', proficiency: '', mode: '', learnedInState: '' }]);
     const [controlledLanguageBlobs, setControlledLanguageBlobs] = useState([]);
     const [ownLanguageBlobs, setOwnLanguageBlobs] = useState([]);
     // const [imageBlobs, setImageBlobs] = useState([null, null, null]);
@@ -219,6 +219,20 @@ const Home = () => {
     }
 
 
+    const statesNotValid = () => {
+        return (statesVisited.length === 0 || statesVisited.map(s => { return s.stateName }).includes("") || statesVisited.map(s => { return s.durationLived }).includes("") || statesVisited.map(s => { return s.district }).includes(""))
+    }
+
+    const languagesNotValid = () => {
+        return languagesSpoken.length === 0 || ((languagesSpoken.map(l => { return l.languageName }).includes("")
+            || languagesSpoken.map(l => { return l.proficiency }).includes("")
+            || languagesSpoken.map(l => { return l.learnedInState }).includes("")
+            || (languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[1] && ownLanguageBlobs[ownLanguageBlobs.length - 1] === null)
+            || ((languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[2] || languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[3])
+                && (ownLanguageBlobs[ownLanguageBlobs.length - 1] === null || controlledLanguageBlobs[controlledLanguageBlobs.length - 1] === null))))
+    }
+
+
     return (
         <div>
             <CircularProgress style={{ 'display': submitting ? 'block' : 'none' }}
@@ -245,14 +259,15 @@ const Home = () => {
                     </Box>
 
 
-                    <Box sx={{ mt: '10px', pl: { sm: '0px', md: '250px', lg: '300px' } }}>
-                        <AppBar style={{ 'backgroundColor': 'white', 'zIndex': '0', 'height': '0px', 'position': 'absolute' }}>
+                    <Box sx={{ mt: '10px', pl: { sm: '0px', md: '250px', lg: '275px' } }}>
+                        <AppBar style={{ 'backgroundColor': 'white', 'zIndex': '0', 'height': '0px', 'position': 'absolute' }}
+                            sx={{ mr: { xs: '20px', md: '35px', lg: '55px' } }}>
                             <ul id="nav-list">
                                 <li onClick={() => { setStep(1) }}
-                                    style={step === 1 ? { 'textDecoration': 'underline', 'color': 'black', 'textDecorationColor': 'black', 'fontWeight': '600' } : { 'listStyleType': 'none', 'padding': '20px', 'borderRadius': '10px', 'transition': 'background 1s', 'color': 'grey', 'fontWeight': '500', 'fontSize': '20px' }}>Basic</li>
-                                <li onClick={() => { setStep(2) }}
-                                    style={step === 2 ? { 'textDecoration': 'underline', 'color': 'black', 'textDecorationColor': 'black', 'fontWeight': '600' } : { 'listStyleType': 'none', 'padding': '20px', 'borderRadius': '10px', 'transition': 'background 1s', 'color': 'grey', 'fontWeight': '500', 'fontSize': '20px' }}>States</li>
-                                <li onClick={() => { setStep(3) }}
+                                    style={step === 1 ? { 'textDecoration': 'underline', 'color': 'black', 'textDecorationColor': 'black', 'fontWeight': '600' } : { 'listStyleType': 'none', 'padding': '20px', 'borderRadius': '10px', 'transition': 'background 1s', 'color': 'grey', 'fontWeight': '500', 'fontSize': '20px' }}>Metadata</li>
+                                <li onClick={() => { if (step == 3 || age !== "") setStep(2) }}
+                                    style={step === 2 ? { 'textDecoration': 'underline', 'color': 'black', 'textDecorationColor': 'black', 'fontWeight': '600' } : { 'listStyleType': 'none', 'padding': '20px', 'borderRadius': '10px', 'transition': 'background 1s', 'color': 'grey', 'fontWeight': '500', 'fontSize': '20px' }}>Domiciles</li>
+                                <li onClick={() => { if (!statesNotValid() && age !== "") setStep(3) }}
                                     style={step === 3 ? { 'textDecoration': 'underline', 'color': 'black', 'textDecorationColor': 'black', 'fontWeight': '600' } : { 'listStyleType': 'none', 'padding': '20px', 'borderRadius': '10px', 'transition': 'background 1s', 'color': 'grey', 'fontWeight': '500', 'fontSize': '20px' }}>Languages</li>
                             </ul>
                         </AppBar>
@@ -262,8 +277,8 @@ const Home = () => {
                 {
                     step === 1 ?
                         <Box style={{ 'marginBottom': '10px' }}>
-                            <Box style={{ 'backgroundColor': '#9eecff', 'height': '325px', 'marginTop': '100px', 'borderRadius': '10px', 'paddingBottom': '10px', 'paddingTop': '10px' }}
-                                sx={{ ml: { xs: '25px', md: '400px', lg: '450px' }, width: { xs: '350px', md: '375px', lg: '400px' } }}>
+                            <Box style={{ 'backgroundColor': '#dedede', 'marginTop': '100px', 'borderRadius': '10px', 'paddingBottom': '10px', 'paddingTop': '10px' }}
+                                sx={{ ml: { xs: '25px', md: '400px', lg: '400px' }, width: { xs: '350px', md: '375px', lg: '500px' }, height: { xs: '300px', md: '200px', lg: '200px' } }}>
                                 <Box>
                                     <FormControl >
                                         <FormLabel id="demo-radio-buttons-group-label" style={{ 'color': 'black', 'fontSize': '20px', 'fontWeight': '1000', }}>Gender</FormLabel>
@@ -271,31 +286,60 @@ const Home = () => {
                                             aria-labelledby="demo-radio-buttons-group-label"
                                             defaultValue="female"
                                             name="radio-buttons-group"
+                                            style={{ 'display': 'flex' }}
+                                            sx={{ flexDirection: { xs: 'column', md: 'row', lg: 'row' } }}
+
 
                                             onChange={(e) => { setGender(e.target.value) }}>
-                                            <FormControlLabel value="female" control={<Radio />} label="Female" />
-                                            <FormControlLabel value="male" control={<Radio />} label="Male" />
-                                            <FormControlLabel value="other" control={<Radio />} label="Other" />
-                                            <FormControlLabel value="preferNotToSay" control={<Radio />} label="Prefer Not To Say" />
+                                            <FormControlLabel value="female" control={<Radio sx={{
+
+                                                '&.Mui-checked': {
+                                                    color: 'black',
+                                                }
+                                            }} />} label="Female" />
+                                            <FormControlLabel value="male" control={<Radio sx={{
+
+                                                '&.Mui-checked': {
+                                                    color: 'black',
+                                                }
+                                            }} />} label="Male" style={{ 'color': 'black' }} />
+                                            <FormControlLabel value="other" control={<Radio sx={{
+
+                                                '&.Mui-checked': {
+                                                    color: 'black',
+                                                }
+                                            }} />} label="Other" style={{ 'color': 'black' }} />
+                                            <FormControlLabel value="preferNotToSay" control={<Radio sx={{
+
+                                                '&.Mui-checked': {
+                                                    color: 'black',
+                                                }
+                                            }} />} label="Prefer Not To Say" style={{ 'color': 'black' }} />
                                         </RadioGroup>
                                     </FormControl>
                                 </Box>
 
 
                                 <Box >
-                                    <Typography style={{ 'paddingTop': '20px', 'color': 'black', 'fontSize': '20px', 'fontWeight': '1000' }}>Enter Age <Typography syle={{ 'fontWeight': '300' }}>(in years)</Typography></Typography>
+                                    <Typography style={{ 'paddingTop': '20px', 'color': 'black', 'fontSize': '20px', 'fontWeight': '1000' }}>Age<Typography syle={{ 'fontWeight': '300' }}></Typography></Typography>
 
-                                    <InputNumber min={0} value={age}
-                                        showButtons
+                                    <Input type='number' min={1} value={age}
+                                        placeholder='in years'
+                                        // classes={{ focused: 'custom-focused-input' }}
+
+
+                                        style={{ 'border': 'none', 'borderBottom': '2px solid black', 'padding': '5px 10px', 'outline': 'none', 'backgroundColor': '#dedede' }}
+
+                                        // showButtons
                                         // placeholder='Age in years'
-                                        onChange={(e) => { setAge(e.value); }} />
+                                        onChange={(e) => { setAge(e.target.value); console.log(age) }} />
                                 </Box>
                             </Box>
                             <Box sx={{ pl: { xs: '35px', md: '115px', lg: '150px' } }}>
                                 <Button variant="contained" color="primary" onClick={nextStep}
-                                    style={{ 'marginTop': '20px' }}
+                                    style={{ 'marginTop': '20px', 'backgroundColor': (age === 0 || age === '') ? '#dedede' : 'black', 'color': 'white' }}
 
-                                    disabled={age === '' ? true : false}
+                                    disabled={(age === 0 || age === '') ? true : false}
                                 > Next</Button>
                             </Box>
                         </Box> : null
@@ -319,18 +363,26 @@ const Home = () => {
                     step === 2 ?
                         <Box style={{ 'paddingTop': '80px' }}>
                             <Box>
-                                <Box style={{ 'position': 'fixed', 'marginTop': '10px' }}
+                                {/* <Box style={{ 'position': 'fixed', 'marginTop': '10px' }}
                                     sx={{ ml: { xs: '450px', md: '600px', lg: '900px' } }}>
-                                    <Button variant="contained" color="primary" disabled={(statesVisited.length > 0 && (statesVisited[statesVisited.length - 1].stateName === "" || statesVisited[statesVisited.length - 1].durationLived === "")) ? true : false}
-                                        onClick={() => setStatesVisited([...statesVisited, { stateName: "", durationLived: '' }])}>
+                                    <Button variant="contained" color="primary" disabled={statesNotValid() ? true : false}
+                                        onClick={() => setStatesVisited([...statesVisited, { stateName: "", district: "", durationLived: '' }])}>
                                         Add State</Button>
-                                </Box>
+                                </Box> */}
                                 {statesVisited.map((s, index) => <State s={s} index={index} states={states} setStatesVisited={setStatesVisited} statesVisited={statesVisited} />)}
                             </Box>
-                            <Box style={{ 'padding': '10px' }} sx={{ ml: { lg: '150px' } }}>
-                                <Button variant="contained" color="primary" style={{ 'marginRight': '10px' }} onClick={prevStep}> Previous</Button>
-                                <Button variant="contained" color="primary" style={{ 'marginLeft': '10px' }} onClick={nextStep}
-                                    disabled={(statesVisited.length === 0 || statesVisited.map(s => { return s.stateName }).includes("") || statesVisited.map(s => { return s.durationLived }).includes("")) ? true : false}
+                            <Box style={{ 'padding': '10px' }} sx={{ ml: { xs: '0px', lg: '150px' }, mr: { xs: '200px', lg: '0px' } }}>
+                                <Button variant="contained" color="primary" style={{ 'backgroundColor': 'black', 'color': 'white' }}
+                                    sx={{ mr: { xs: '20px', md: '10px', lg: '70px' } }}
+                                    onClick={prevStep}> Previous</Button>
+                                <Button variant="contained" color="primary" disabled={statesNotValid() ? true : false}
+                                    onClick={() => setStatesVisited([...statesVisited, { stateName: "", district: "", durationLived: '' }])}
+                                    style={{ 'backgroundColor': statesNotValid() ? '#dedede' : 'black' }}>
+                                    Add State</Button>
+                                <Button variant="contained" color="primary" style={{ 'backgroundColor': statesNotValid() ? '#dedede' : 'black', 'color': 'white' }}
+                                    sx={{ ml: { xs: '20px', md: '10px', lg: '70px' } }}
+                                    onClick={nextStep}
+                                    disabled={statesNotValid() ? true : false}
                                 > Next</Button>
                             </Box>
                         </Box> : null
@@ -349,37 +401,35 @@ const Home = () => {
                     step === 3 ?
                         <Box style={{ 'paddingTop': '80px' }}>
                             <Box>
-                                <Box style={{ 'position': 'fixed' }}
+                                {/* <Box style={{ 'position': 'fixed' }}
                                     sx={{ ml: { xs: '450px', md: '700px', lg: '1050px' }, mt: '10px' }}>
                                     <Button variant="contained" color="primary"
-                                        disabled={languagesSpoken.length > 0 && (languagesSpoken[languagesSpoken.length - 1].languageName === ""
-                                            || languagesSpoken[languagesSpoken.length - 1].proficiency === ""
-                                            || languagesSpoken[languagesSpoken.length - 1].learnedInState === ""
-                                            || (languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[1] && ownLanguageBlobs[ownLanguageBlobs.length - 1] === null)
-                                            || ((languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[2] || languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[3])
-                                                && (ownLanguageBlobs[ownLanguageBlobs.length - 1] === null || controlledLanguageBlobs[controlledLanguageBlobs.length - 1] === null))) ? true : false}
+                                        disabled={languagesNotValid() ? true : false}
                                         onClick={() => { setLanguagesSpoken([...languagesSpoken, { languageName: '', proficiency: '', mode: '', learnedInState: '' }]); setControlledLanguageBlobs([...controlledLanguageBlobs, null]); setOwnLanguageBlobs([...ownLanguageBlobs, null]); }}>
                                         Add Language
                                     </Button>
-                                </Box>
+                                </Box> */}
                                 {languagesSpoken.map((l, index) => <Language l={l} index={index} proficiencies={proficiencies} languages={languages} setLanguagesSpoken={setLanguagesSpoken} languagesSpoken={languagesSpoken} statesVisited={statesVisited} states={states} controlledLanguageBlobs={controlledLanguageBlobs} setControlledLanguageBlobs={setControlledLanguageBlobs} ownLanguageBlobs={ownLanguageBlobs} setOwnLanguageBlobs={setOwnLanguageBlobs} />)}
 
                             </Box>
 
-                            <Box style={{ 'paddingTop': '20px', 'paddingBottom': '10px' }} sx={{ pl: { lg: '100px' } }}>
+                            <Box style={{ 'paddingTop': '20px', 'paddingBottom': '10px' }}
+                                sx={{ pl: { xs: '0px', lg: '100px' }, pr: { xs: '205px', lg: '0px' } }}>
 
                                 <Button variant="contained" color="primary" onClick={prevStep}
-                                    style={{ 'marginRight': '10px' }}
+                                    style={{ 'backgroundColor': 'black', 'color': 'white' }}
+                                    sx={{ mr: { xs: '30px', md: '10px', lg: '220px' } }}
                                 > Previous</Button>
-
-                                <Button variant="contained" color="primary" onClick={() => { setSubmitting(true); submitData(); }} style={{ 'marginLeft': '10px' }}
+                                <Button variant="contained" color="primary"
+                                    disabled={languagesNotValid() ? true : false}
+                                    style={{ 'backgroundColor': languagesNotValid() ? '#dedede' : 'black' }}
+                                    onClick={() => { setLanguagesSpoken([...languagesSpoken, { languageName: '', proficiency: '', mode: '', learnedInState: '' }]); setControlledLanguageBlobs([...controlledLanguageBlobs, null]); setOwnLanguageBlobs([...ownLanguageBlobs, null]); }}>
+                                    Add Language
+                                </Button>
+                                <Button variant="contained" color="primary" onClick={() => { setSubmitting(true); submitData(); }} style={{ 'backgroundColor': languagesNotValid() ? '#dedede' : 'black', 'color': 'white' }}
+                                    sx={{ ml: { xs: '30px', md: '10px', lg: '220px' } }}
                                     // disabled={(isVideo && isAudio && isImage && name !== "" && state !== "") ? false : true}
-                                    disabled={languagesSpoken.length === 0 || ((languagesSpoken.map(l => { return l.languageName }).includes("")
-                                        || languagesSpoken.map(l => { return l.proficiency }).includes("")
-                                        || languagesSpoken.map(l => { return l.learnedInState }).includes("")
-                                        || (languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[1] && ownLanguageBlobs[ownLanguageBlobs.length - 1] === null)
-                                        || ((languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[2] || languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[3])
-                                            && (ownLanguageBlobs[ownLanguageBlobs.length - 1] === null || controlledLanguageBlobs[controlledLanguageBlobs.length - 1] === null)))) ? true : false}
+                                    disabled={languagesNotValid() ? true : false}
                                 >
                                     Submit
                                 </Button>
@@ -387,7 +437,7 @@ const Home = () => {
                         </Box> : null
                 }
             </Box>
-        </div >
+        </div>
     );
 }
 
