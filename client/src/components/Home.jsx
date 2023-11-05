@@ -122,7 +122,7 @@ const Home = () => {
             submitOwnLanguageBlobs(submissionId).then((ownLanguageRes) => {
                 console.log("ownLangaugeRes", ownLanguageRes);
                 let statesVisitedData = statesVisited.map((s, index) => {
-                    return { stateName: s.stateName, durationLived: s.durationLived }
+                    return { stateName: s.stateName, district: s.district, durationLived: s.durationLived }
                 })
 
                 let languagesSpokenData = languagesSpoken.map((l, index) => {
@@ -261,7 +261,7 @@ const Home = () => {
 
                     <Box sx={{ mt: '10px', pl: { sm: '0px', md: '250px', lg: '275px' } }}>
                         <AppBar style={{ 'backgroundColor': 'white', 'zIndex': '0', 'height': '0px', 'position': 'absolute' }}
-                            sx={{ mr: { xs: '20px', md: '35px', lg: '55px' } }}>
+                            sx={{ mr: { xs: '30px', md: '35px', lg: '55px' } }}>
                             <ul id="nav-list">
                                 <li onClick={() => { setStep(1) }}
                                     style={step === 1 ? { 'textDecoration': 'underline', 'color': 'black', 'textDecorationColor': 'black', 'fontWeight': '600' } : { 'listStyleType': 'none', 'padding': '20px', 'borderRadius': '10px', 'transition': 'background 1s', 'color': 'grey', 'fontWeight': '500', 'fontSize': '20px' }}>Metadata</li>
