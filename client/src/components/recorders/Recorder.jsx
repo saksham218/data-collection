@@ -17,7 +17,7 @@ const Recorder = ({ language, learnedInState, index, proficiencies, proficiency,
                     <Typography style={{ 'fontSize': '20px', 'fontWeight': '1000' }}>Record audio while reading the following text</Typography>
 
                     {/* import english image from images folder*/}
-                    {(language === "English" || language === "Hindi") ? <img src={require(`../../images/${language}.jpg`)} alt={language} style={{ 'width': '200px', 'height': '150px' }} /> : null}
+                    {(language === "English" || language === "Hindi") ? <img src={require(`../../images/${language}.jpg`)} alt={language} style={{ 'width': '250px', 'height': '225px' }} /> : null}
 
 
                     <AudioRecorder index={index} languageBlobs={controlledLanguageBlobs} setLanguageBlobs={setControlledLanguageBlobs} />
