@@ -37,14 +37,14 @@ export const postBlobAzure = async (blob, name) => {
     const containerName = process.env.REACT_APP_CONTAINER_NAME;
     const sasToken = process.env.REACT_APP_SAS_TOKEN;
 
-    const uploadUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${name}${sasToken}`;
+    const url = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${name}${sasToken}`;
 
-    return axios.put(uploadUrl, blob, {
+    return axios.put(url, blob, {
         headers: {
             'x-ms-blob-type': 'BlockBlob',
-            'Content-Type': blob.type,
+            'Content-Type': blob.type
         }
-    });
+    })
 }
 
 
