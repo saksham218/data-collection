@@ -1,22 +1,13 @@
-import React from 'react'
-import { useState } from "react";
-import { Typography, TextField, Menu, MenuItem, Select, FormControl, InputLabel, FormGroup, Box, Button, AppBar, CircularProgress, Input } from "@mui/material";
-import VideoRecorder from "./recorders/VideoRecorder";
-import AudioRecorder from "./recorders/AudioRecorder";
-import ImageCapturer from './recorders/ImageCapturer';
-import { postBlob, postMetaData, postBlobAzure } from '../api';
+import React, { useState } from 'react'
 import { Link, redirect, useNavigate } from 'react-router-dom';
+import { Typography, TextField, Menu, MenuItem, Select, FormControl, InputLabel, FormGroup, Box, Button, AppBar, CircularProgress, Input } from "@mui/material";
+import { Radio, RadioGroup, FormControlLabel, FormLabel } from '@mui/material';
+
+import { postBlob, postMetaData, postBlobAzure } from '../api';
 import State from './State';
 import Language from './Language';
-import { Radio, RadioGroup, FormControlLabel, FormLabel } from '@mui/material';
-// import DatePicker from 'react-date-picker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { InputNumber } from 'primereact/inputnumber';
-
-
 import './Home.css';
+import Disclaimer from './Disclaimer';
 
 var randomstring = require("randomstring");
 
@@ -27,6 +18,8 @@ const Home = () => {
     const [gender, setGender] = useState("female");
     const [age, setAge] = useState('');
     const [submitting, setSubmitting] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+
     // const [dob, setDob] = useState(null);
     // const [state, setState] = useState("");
     // const [videoBlob, setVideoBlob] = useState(null);
@@ -45,7 +38,7 @@ const Home = () => {
     const [step, setStep] = useState(1);
 
     const states = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh',
-        'Jharkhand', 'Karnataka', 'Kearla', 'Madya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan',
+        'Jharkhand', 'Karnataka', 'Kerala', 'Madya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan',
         'Sikkim', 'Tamil Nadu', 'Telagana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'];
 
     // const languages = ['Hindi', 'English', 'Tamil', 'Telugu', 'Kannada', 'Malayalam', 'Marathi', 'Gujarati', 'Bengali', 'Odia', 'Punjabi', 'Assamese', 'Kashmiri', 'Sindhi', 'Urdu', 'Konkani', 'Manipuri', 'Nepali', 'Bodo', 'Dogri', 'Maithili', 'Santali', 'Sanskrit', 'Urdu']
@@ -255,15 +248,33 @@ const Home = () => {
                         style={{ 'top': '0', 'right': '0' }}
                     >ABOUT US</Button> */}
 
-                    <Box sx={{ ml: { xs: '60px', md: '250px', lg: '475px' }, mt: '10px' }} >
+                    <Box sx={{ ml: { xs: '60px', md: '250px', lg: '475px' }, mt: '10px', display: 'flex' }} >
                         <Typography variant='h2' style={{ 'textAlign': 'left', 'fontWeight': '600', 'fontFamily': "'Quicksand', sans-serif" }} sx={{ fontSize: { xs: "25px", md: "28px", lg: '30px' } }}>Data Collection Platform</Typography>
+                        <Box sx={{ display: { xs: 'none', md: 'block', lg: 'block' } }}>
+                            <Button sx={{ ml: { md: '150px', lg: '200px' }, mb: "20px", color: "black" }} onClick={(() => { navigate("/about") })}>About</Button>
+                            <Button sx={{ mb: "20px", color: "black" }} onClick={(() => { navigate("/people") })}>People</Button>
+                        </Box>
+
+                        <Box className="hamburger-menu" sx={{ display: { xs: 'block', md: 'none', lg: 'none' } }}>
+                            <Button className={"hamburger-icon"} onClick={() => { setIsOpen(!isOpen) }}>
+                                <div className="bar"></div>
+                                <div className="bar"></div>
+                                <div className="bar"></div>
+                            </Button>
+                            {isOpen && (
+                                <Box className="menu">
+                                    <Button sx={{ color: "black" }} onClick={(() => { navigate("/about") })}>About</Button>
+                                    <Button sx={{ color: "black" }} onClick={(() => { navigate("/people") })}>People</Button>
+                                </Box>
+                            )}
+                        </Box>
                     </Box>
 
-
-                    <Box sx={{ mt: '10px', pl: { sm: '0px', md: '250px', lg: '275px' } }}>
-                        <AppBar style={{ 'backgroundColor': 'white', 'zIndex': '0', 'height': '0px', 'position': 'absolute' }}
-                            sx={{ mr: { xs: '30px', md: '35px', lg: '55px' } }}>
+                    <Box >
+                        <AppBar position="static" style={{ boxShadow: 'none', backgroundColor: "white" }}>
                             <ul id="nav-list">
+                                <li onClick={() => { setStep(0) }}
+                                    style={step === 0 ? { 'textDecoration': 'underline', 'color': 'black', 'textDecorationColor': 'black', 'fontWeight': '600' } : { 'listStyleType': 'none', 'padding': '20px', 'borderRadius': '10px', 'transition': 'background 1s', 'color': 'grey', 'fontWeight': '500', 'fontSize': '20px' }}>Disclaimer</li>
                                 <li onClick={() => { setStep(1) }}
                                     style={step === 1 ? { 'textDecoration': 'underline', 'color': 'black', 'textDecorationColor': 'black', 'fontWeight': '600' } : { 'listStyleType': 'none', 'padding': '20px', 'borderRadius': '10px', 'transition': 'background 1s', 'color': 'grey', 'fontWeight': '500', 'fontSize': '20px' }}>Metadata</li>
                                 <li onClick={() => { if (step == 3 || age !== "") setStep(2) }}
@@ -276,10 +287,20 @@ const Home = () => {
                 </Box>
                 {/* <TextField label="Name" gutterBottom value={name} onChange={(e) => { setName(e.target.value) }} /> */}
                 {
+                    step === 0 ? <Box style={{ 'marginBottom': '10px' }}>
+                        <Disclaimer />
+                        <Box sx={{ pl: { xs: '25px', md: '115px', lg: '150px' } }}
+                            style={{ 'marginTop': '20px' }}>
+                            <Button variant="contained" color="primary" onClick={nextStep} style={{ 'backgroundColor': 'black', 'color': 'white' }}> I Agree</Button>
+                        </Box>
+                    </Box>
+                        : null
+                }
+                {
                     step === 1 ?
                         <Box style={{ 'marginBottom': '10px' }}>
-                            <Box style={{ 'backgroundColor': '#dedede', 'marginTop': '100px', 'borderRadius': '10px', 'paddingBottom': '10px', 'paddingTop': '10px' }}
-                                sx={{ ml: { xs: '25px', md: '400px', lg: '400px' }, width: { xs: '350px', md: '375px', lg: '500px' }, height: { xs: '300px', md: '200px', lg: '200px' } }}>
+                            <Box style={{ 'backgroundColor': '#dedede', 'borderRadius': '10px', 'paddingBottom': '10px', 'paddingTop': '10px' }}
+                                sx={{ ml: { xs: '25px', md: '400px', lg: '400px' }, mt: { xs: '10px', md: '50px', lg: '80px' }, width: { xs: '350px', md: '375px', lg: '500px' }, height: { xs: '300px', md: '200px', lg: '200px' } }}>
                                 <Box>
                                     <FormControl >
                                         <FormLabel id="demo-radio-buttons-group-label" style={{ 'color': 'black', 'fontSize': '20px', 'fontWeight': '1000', }}>Gender</FormLabel>
@@ -362,7 +383,7 @@ const Home = () => {
 
                 {
                     step === 2 ?
-                        <Box style={{ 'paddingTop': '80px' }}>
+                        <Box sx={{ mt: { xs: '10px', md: '50px', lg: '80px' } }}>
                             <Box>
                                 {/* <Box style={{ 'position': 'fixed', 'marginTop': '10px' }}
                                     sx={{ ml: { xs: '450px', md: '600px', lg: '900px' } }}>
@@ -372,7 +393,7 @@ const Home = () => {
                                 </Box> */}
                                 {statesVisited.map((s, index) => <State s={s} index={index} states={states} setStatesVisited={setStatesVisited} statesVisited={statesVisited} />)}
                             </Box>
-                            <Box style={{ 'padding': '10px' }} sx={{ ml: { xs: '0px', lg: '150px' }, mr: { xs: '200px', lg: '0px' } }}>
+                            <Box style={{ 'paddingTop': '10px' }} sx={{ ml: { xs: '0px', lg: '150px' }, mr: { xs: '250px', lg: '0px' } }}>
                                 <Button variant="contained" color="primary" style={{ 'backgroundColor': 'black', 'color': 'white' }}
                                     sx={{ mr: { xs: '20px', md: '10px', lg: '70px' } }}
                                     onClick={prevStep}> Previous</Button>
@@ -400,7 +421,7 @@ const Home = () => {
 
                 {
                     step === 3 ?
-                        <Box style={{ 'paddingTop': '80px' }}>
+                        <Box sx={{ mt: { xs: '10px', md: '50px', lg: '80px' } }}>
                             <Box>
                                 {/* <Box style={{ 'position': 'fixed' }}
                                     sx={{ ml: { xs: '450px', md: '700px', lg: '1050px' }, mt: '10px' }}>
@@ -419,7 +440,7 @@ const Home = () => {
 
                                 <Button variant="contained" color="primary" onClick={prevStep}
                                     style={{ 'backgroundColor': 'black', 'color': 'white' }}
-                                    sx={{ mr: { xs: '30px', md: '10px', lg: '220px' } }}
+                                    sx={{ mr: { xs: '20px', md: '10px', lg: '220px' } }}
                                 > Previous</Button>
                                 <Button variant="contained" color="primary"
                                     disabled={languagesNotValid() ? true : false}
@@ -428,7 +449,7 @@ const Home = () => {
                                     Add Language
                                 </Button>
                                 <Button variant="contained" color="primary" onClick={() => { setSubmitting(true); submitData(); }} style={{ 'backgroundColor': languagesNotValid() ? '#dedede' : 'black', 'color': 'white' }}
-                                    sx={{ ml: { xs: '30px', md: '10px', lg: '220px' } }}
+                                    sx={{ ml: { xs: '20px', md: '10px', lg: '220px' }, mr: { xs: '40px' } }}
                                     // disabled={(isVideo && isAudio && isImage && name !== "" && state !== "") ? false : true}
                                     disabled={languagesNotValid() ? true : false}
                                 >
@@ -438,7 +459,7 @@ const Home = () => {
                         </Box> : null
                 }
             </Box>
-        </div>
+        </div >
     );
 }
 

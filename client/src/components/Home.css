@@ -1,15 +1,15 @@
 /* styles for lg size */
 @media (min-width: 992px) {
     #nav-list {
-        margin-top: 50px;
+        /* margin-top: 50px; */
         display: flex;
-        background-color: white;
-        height: 30px;
+        /* background-color: white; */
+        height: 10px;
         border: 0px;
-        z-index: 5;
+        /* z-index: 5; */
         /* top: 1000; */
-        padding-top: 5px;
-        padding-left: 500px
+        /* padding-top: 5px; */
+        padding-left: 400px
     }
 
     #nav-list li {
@@ -53,15 +53,19 @@
 /* styles for sm size */
 @media (max-width: 991px) {
     #nav-list {
-        margin-top: 50px;
+        /* margin-top: 50px; */
         display: flex;
-        background-color: white;
-        height: 30px;
+        flex-direction: row;
+        width: 300px;
+        /* background-color: white; */
+        /* height: 30px; */
         border: 0px;
-        z-index: 5;
+        /* z-index: 5; */
         /* top: 1000; */
         padding-top: 5px;
-        padding-left: 40px
+        padding-left: 10px;
+
+        overflow-x: auto;
     }
 
     #nav-list li {
@@ -106,4 +110,48 @@
     border-bottom: 2px solid black;
     outline: red;
     /* Change the border color when the input is in focus */
+}
+
+.hamburger-menu {
+    position: relative;
+}
+
+.hamburger-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.bar {
+    width: 25px;
+    height: 3px;
+    background: #333;
+    margin: 2px auto;
+    transition: all 0.3s ease-in-out;
+}
+
+
+
+.menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #333;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu button {
+    text-decoration: none;
+    color: #333;
+    padding: 5px 0;
+}
+
+.menu button:hover {
+    background-color: grey;
 }

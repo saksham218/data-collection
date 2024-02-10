@@ -2,9 +2,10 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import './App.css';
-import AboutUs from './components/AboutUs';
+import About from './components/About';
 import Home from './components/Home';
 import ThankYou from './components/ThankYou';
+import People from './components/People';
 
 function App() {
   return (
@@ -13,9 +14,10 @@ function App() {
 
         <Routes>
 
-          <Route path="/" eaxct element={<Home />} />
+          <Route path="/" exact element={<Home />} />
           <Route path="/thankyou" element={<ThankYou />} />
-          <Route path="/aboutus" element={<AboutUs />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/People" element={<People />} />
         </Routes>
 
       </BrowserRouter>

@@ -20,7 +20,7 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
                 'height': (index <= 2 && (l.proficiency === proficiencies[2] || l.proficiency === proficiencies[3]) ? '850px' : ((index > 2 || l.proficiency === proficiencies[0]) ? '300px' : '450px')),
                 'borderRadius': '10px'
             }}
-                sx={{ ml: { xs: '25px', md: '100px', lg: '225px' }, width: { xs: '400px', md: '600px', lg: '800px' } }}>
+                sx={{ ml: { xs: '25px', md: '100px', lg: '225px' }, width: { xs: '350px', md: '600px', lg: '800px' } }}>
                 <Box>
                     <FormControl style={{ 'width': "225px", 'marginRight': '10px' }}>
                         <Typography style={{ 'fontSize': '20px', 'fontWeight': '1000' }}>Language</Typography>
