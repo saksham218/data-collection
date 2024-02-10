@@ -19,6 +19,7 @@ const Home = () => {
     const [age, setAge] = useState('');
     const [submitting, setSubmitting] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const [agreed, setAgreed] = useState(false);
 
     // const [dob, setDob] = useState(null);
     // const [state, setState] = useState("");
@@ -35,7 +36,7 @@ const Home = () => {
     const [ownLanguageBlobs, setOwnLanguageBlobs] = useState([]);
     // const [imageBlobs, setImageBlobs] = useState([null, null, null]);
 
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(0);
 
     const states = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh',
         'Jharkhand', 'Karnataka', 'Kerala', 'Madya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan',
@@ -275,7 +276,7 @@ const Home = () => {
                             <ul id="nav-list">
                                 <li onClick={() => { setStep(0) }}
                                     style={step === 0 ? { 'textDecoration': 'underline', 'color': 'black', 'textDecorationColor': 'black', 'fontWeight': '600' } : { 'listStyleType': 'none', 'padding': '20px', 'borderRadius': '10px', 'transition': 'background 1s', 'color': 'grey', 'fontWeight': '500', 'fontSize': '20px' }}>Disclaimer</li>
-                                <li onClick={() => { setStep(1) }}
+                                <li onClick={() => { if (agreed) setStep(1) }}
                                     style={step === 1 ? { 'textDecoration': 'underline', 'color': 'black', 'textDecorationColor': 'black', 'fontWeight': '600' } : { 'listStyleType': 'none', 'padding': '20px', 'borderRadius': '10px', 'transition': 'background 1s', 'color': 'grey', 'fontWeight': '500', 'fontSize': '20px' }}>Metadata</li>
                                 <li onClick={() => { if (step == 3 || age !== "") setStep(2) }}
                                     style={step === 2 ? { 'textDecoration': 'underline', 'color': 'black', 'textDecorationColor': 'black', 'fontWeight': '600' } : { 'listStyleType': 'none', 'padding': '20px', 'borderRadius': '10px', 'transition': 'background 1s', 'color': 'grey', 'fontWeight': '500', 'fontSize': '20px' }}>Domiciles</li>
@@ -291,7 +292,7 @@ const Home = () => {
                         <Disclaimer />
                         <Box sx={{ pl: { xs: '25px', md: '115px', lg: '150px' } }}
                             style={{ 'marginTop': '20px' }}>
-                            <Button variant="contained" color="primary" onClick={nextStep} style={{ 'backgroundColor': 'black', 'color': 'white' }}> I Agree</Button>
+                            <Button variant="contained" color="primary" onClick={() => { setAgreed(true); nextStep(); }} style={{ 'backgroundColor': 'black', 'color': 'white' }}> I Agree</Button>
                         </Box>
                     </Box>
                         : null
