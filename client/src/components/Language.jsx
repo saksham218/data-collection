@@ -11,6 +11,10 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
     const availableLanguages = languages.filter(la => !languagesSpoken.map(l => l.languageName).includes(la))
     const availableStates = states.filter(st => statesVisited.map(s => s.stateName).includes(st))
 
+    const handleSelect = (e) => {
+        e.preventDefault();
+        console.log("Selected!")
+    }
 
     return (
 
@@ -25,10 +29,25 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
                     <FormControl style={{ 'width': "225px", 'marginRight': '10px' }}>
                         <Typography style={{ 'fontSize': '20px', 'fontWeight': '1000' }}>Language</Typography>
                         {/* <InputLabel>Language</InputLabel> */}
-                        <Select style={{
-                            'backgroundColor': '#dedede',
-                            'borderBottom': '2px solid black'
-                        }} value={l.languageName} onChange={(e) => { let data = [...languagesSpoken]; data[index].languageName = e.target.value; setLanguagesSpoken(data); console.log(languagesSpoken) }}>
+                        <Select
+
+                            style={{
+                                'backgroundColor': '#dedede',
+                                'borderBottom': '2px solid black',
+                                // height: '60px',
+                                // borderRadius: '6px',
+                                // paddingLeft: '90px'
+                            }}
+
+                            MenuProps={{
+                                autoFocus: false,
+                                disableAutoFocusItem: true,
+                                disableEnforceFocus: true,
+                                disableAutoFocus: true
+                            }}
+                            value={l.languageName} onChange={(e) => { let data = [...languagesSpoken]; data[index].languageName = e.target.value; setLanguagesSpoken(data); console.log(languagesSpoken) }}
+                            onSelect={handleSelect}
+                        >
                             {languages.map(la => {
 
                                 return <MenuItem style={{ display: availableLanguages.includes(la) ? "block" : "none" }} value={la}>{la}</MenuItem>
@@ -44,10 +63,18 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
                         <Select style={{
                             'backgroundColor': '#dedede',
                             'borderBottom': '2px solid black'
-                        }} value={l.learnedInState} onChange={(e) => {
-                            let data = [...languagesSpoken];
-                            data[index].learnedInState = e.target.value; setLanguagesSpoken(data); console.log(languagesSpoken)
-                        }}>
+                        }}
+
+                            MenuProps={{
+                                autoFocus: false,
+                                disableAutoFocusItem: true,
+                                disableEnforceFocus: true,
+                                disableAutoFocus: true
+                            }}
+                            value={l.learnedInState} onChange={(e) => {
+                                let data = [...languagesSpoken];
+                                data[index].learnedInState = e.target.value; setLanguagesSpoken(data); console.log(languagesSpoken)
+                            }}>
                             {states.map(st => {
 
                                 return <MenuItem style={{ display: availableStates.includes(st) ? "block" : "none" }} value={st}>{st}</MenuItem>
@@ -64,32 +91,41 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
                         <Select style={{
                             'backgroundColor': '#dedede',
                             'borderBottom': '2px solid black'
-                        }} value={l.proficiency} onChange={(e) => {
-                            let data = [...languagesSpoken];
-                            data[index].proficiency = e.target.value; setLanguagesSpoken(data);
-                            console.log(languagesSpoken);
-                            if (e.target.value === proficiencies[0]) {
-                                data[index].mode = "";
-                                let d1 = [...controlledLanguageBlobs];
-                                d1[index] = null;
-                                setControlledLanguageBlobs(d1);
-                                console.log(controlledLanguageBlobs);
+                        }}
 
-                                let d2 = [...ownLanguageBlobs];
-                                d2[index] = null;
-                                setOwnLanguageBlobs(d2);
-                                console.log(ownLanguageBlobs);
-                            }
-                            if (e.target.value === proficiencies[1]) {
+                            MenuProps={{
+                                autoFocus: false,
+                                disableAutoFocusItem: true,
+                                disableEnforceFocus: true,
+                                disableAutoFocus: true
+                            }}
 
-                                let d1 = [...controlledLanguageBlobs];
-                                d1[index] = null;
-                                setControlledLanguageBlobs(d1);
-                                console.log(controlledLanguageBlobs);
+                            value={l.proficiency} onChange={(e) => {
+                                let data = [...languagesSpoken];
+                                data[index].proficiency = e.target.value; setLanguagesSpoken(data);
+                                console.log(languagesSpoken);
+                                if (e.target.value === proficiencies[0]) {
+                                    data[index].mode = "";
+                                    let d1 = [...controlledLanguageBlobs];
+                                    d1[index] = null;
+                                    setControlledLanguageBlobs(d1);
+                                    console.log(controlledLanguageBlobs);
+
+                                    let d2 = [...ownLanguageBlobs];
+                                    d2[index] = null;
+                                    setOwnLanguageBlobs(d2);
+                                    console.log(ownLanguageBlobs);
+                                }
+                                if (e.target.value === proficiencies[1]) {
+
+                                    let d1 = [...controlledLanguageBlobs];
+                                    d1[index] = null;
+                                    setControlledLanguageBlobs(d1);
+                                    console.log(controlledLanguageBlobs);
 
 
-                            }
-                        }}>
+                                }
+                            }}>
 
                             {proficiencies.map(p => {
 

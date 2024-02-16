@@ -22,6 +22,13 @@ const State = ({ s, index, states, setStatesVisited, statesVisited }) => {
                         'borderBottom': '2px solid black'
                         // 'border': 'none'
                     }}
+
+                        MenuProps={{
+                            autoFocus: false,
+                            disableAutoFocusItem: true,
+                            disableEnforceFocus: true,
+                            disableAutoFocus: true
+                        }}
                         value={s.stateName} onChange={(e) => { let data = [...statesVisited]; data[index].stateName = e.target.value; setStatesVisited(data); console.log(statesVisited) }}>
                         {states.map(st => {
 
