@@ -219,12 +219,21 @@ const Home = () => {
     }
 
     const languagesNotValid = () => {
+
+        const audioMissingIndex = languagesSpoken.findIndex((l, index) => {
+            return (index <= 2 && (
+                (l.proficiency === proficiencies[1] && ownLanguageBlobs[index] === null) ||
+                ((l.proficiency === proficiencies[2] || l.proficiency === proficiencies[3]) && (controlledLanguageBlobs[index] === null || ownLanguageBlobs[index] === null))
+            ))
+        })
+
+
+
         return languagesSpoken.length === 0 || ((languagesSpoken.map(l => { return l.languageName }).includes("")
             || languagesSpoken.map(l => { return l.proficiency }).includes("")
             || languagesSpoken.map(l => { return l.learnedInState }).includes("")
-            || (languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[1] && ownLanguageBlobs[ownLanguageBlobs.length - 1] === null)
-            || ((languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[2] || languagesSpoken[languagesSpoken.length - 1].proficiency === proficiencies[3])
-                && (ownLanguageBlobs[ownLanguageBlobs.length - 1] === null || controlledLanguageBlobs[controlledLanguageBlobs.length - 1] === null))))
+            || audioMissingIndex !== -1
+        ))
     }
 
 
@@ -392,7 +401,19 @@ const Home = () => {
                                         onClick={() => setStatesVisited([...statesVisited, { stateName: "", district: "", durationLived: '' }])}>
                                         Add State</Button>
                                 </Box> */}
-                                {statesVisited.map((s, index) => <State s={s} index={index} states={states} setStatesVisited={setStatesVisited} statesVisited={statesVisited} />)}
+                                {statesVisited.map((s, index) =>
+                                (<Box style={{ display: "flex" }}>
+                                    <State s={s} index={index} states={states} setStatesVisited={setStatesVisited} statesVisited={statesVisited} />
+
+                                    <Button variant="contained" color="error"
+
+                                        style={{ marginLeft: "10px", marginBottom: "330px" }}
+                                        onClick={() => { const newStatesVisited = [...statesVisited]; console.log(index); newStatesVisited.splice(index, 1); setStatesVisited(newStatesVisited); }}
+                                        disabled={statesVisited.length <= 1 ? true : false}
+                                    > Delete</Button>
+
+                                </Box>)
+                                )}
                             </Box>
                             <Box style={{ 'paddingTop': '10px' }} sx={{ ml: { xs: '0px', lg: '150px' }, mr: { xs: '250px', lg: '0px' } }}>
                                 <Button variant="contained" color="primary" style={{ 'backgroundColor': 'black', 'color': 'white' }}
@@ -432,7 +453,28 @@ const Home = () => {
                                         Add Language
                                     </Button>
                                 </Box> */}
-                                {languagesSpoken.map((l, index) => <Language l={l} index={index} proficiencies={proficiencies} languages={languages} setLanguagesSpoken={setLanguagesSpoken} languagesSpoken={languagesSpoken} statesVisited={statesVisited} states={states} controlledLanguageBlobs={controlledLanguageBlobs} setControlledLanguageBlobs={setControlledLanguageBlobs} ownLanguageBlobs={ownLanguageBlobs} setOwnLanguageBlobs={setOwnLanguageBlobs} />)}
+                                {languagesSpoken.map((l, index) =>
+                                (
+                                    <Box style={{ display: "flex" }}>
+                                        <Language l={l} index={index} proficiencies={proficiencies} languages={languages} setLanguagesSpoken={setLanguagesSpoken} languagesSpoken={languagesSpoken} statesVisited={statesVisited} states={states} controlledLanguageBlobs={controlledLanguageBlobs} setControlledLanguageBlobs={setControlledLanguageBlobs} ownLanguageBlobs={ownLanguageBlobs} setOwnLanguageBlobs={setOwnLanguageBlobs} />
+                                        <Button variant="contained" color="error"
+                                            style={{ marginLeft: "10px", marginBottom: "1030px" }}
+                                            onClick={() => {
+                                                const newLanguagesSpoken = [...languagesSpoken];
+                                                newLanguagesSpoken.splice(index, 1);
+                                                setLanguagesSpoken(newLanguagesSpoken);
+                                                const newControlledLanguageBlobs = [...controlledLanguageBlobs];
+                                                newControlledLanguageBlobs.splice(index, 1);
+                                                setControlledLanguageBlobs(newControlledLanguageBlobs);
+                                                const newOwnLanguageBlobs = [...ownLanguageBlobs];
+                                                newOwnLanguageBlobs.splice(index, 1);
+                                                setOwnLanguageBlobs(newOwnLanguageBlobs);
+                                            }}
+                                            disabled={languagesSpoken.length <= 1 ? true : false}
+                                        > Delete</Button>
+                                    </Box>
+                                )
+                                )}
 
                             </Box>
 
@@ -460,7 +502,7 @@ const Home = () => {
                         </Box> : null
                 }
             </Box>
-        </div >
+        </div>
     );
 }
 
