@@ -40,6 +40,10 @@ const metadataSchema = mongoose.Schema({
         // ownLanguageBlobId: String,
         ownLanguageBlobName: String,
     }],
+    createdAt: {
+        type: Date,
+        default: new Date()
+    }
 });
 
 const Metadata = mongoose.model('Metadata', metadataSchema);

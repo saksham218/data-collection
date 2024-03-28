@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import Metadata from '../models/metadata.js';
 
 
