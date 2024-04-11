@@ -248,7 +248,7 @@ const Home = () => {
     return (
         <div>
             <CircularProgress style={{ 'display': submitting ? 'block' : 'none' }}
-                sx={{ margin: { xs: '225px', md: '200px', lg: '200px' }, ml: { xs: '115px', md: '500px', lg: '600px' } }}
+                sx={{ mt: { xs: '300px', md: '200px', lg: '200px' }, ml: { xs: '200px', md: '500px', lg: '600px' } }}
             />
             <Box style={{ 'display': !submitting ? 'block' : 'none' }}
                 sx={{ width: { xs: '650px', md: '900px', lg: '1150px' } }}>
