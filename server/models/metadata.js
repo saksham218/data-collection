@@ -6,6 +6,7 @@ const metadataSchema = mongoose.Schema({
     // name: String,
     gender: String,
     age: Number,
+    iitg: String,
     // dateOfBirth: Date,
     // state: String,
     // imageId: String,

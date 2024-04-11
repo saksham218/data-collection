@@ -44,35 +44,36 @@ const People = () => {
                     <Box style={{ 'marginBottom': '10px', 'marginTop': '10px' }}>
                         <Box style={{ 'paddingBottom': '10px' }}
                             sx={{ ml: { xs: '5px', md: '40px', lg: '40px' }, width: { xs: '500px', md: '600px', lg: '1100px' } }}>
-                            <Typography variant='h4' style={{ 'textAlign': 'left', 'fontWeight': '600', 'fontFamily': "'Quicksand', sans-serif", "textDecoration": "underline" }} sx={{ fontSize: { xs: "25px", md: "28px", lg: '30px' } }}>people involved</Typography>
+                            <Typography variant='h4' style={{ 'textAlign': 'left', 'fontWeight': '600', 'fontFamily': "'Quicksand', sans-serif", "textDecoration": "underline" }} sx={{ fontSize: { xs: "25px", md: "28px", lg: '30px' } }}>Investigators</Typography>
                             <Box>
                                 <List>
                                     <ListItem style={{ display: "block", marginTop: "20px" }}>
-                                        <Typography className='listItem' fontWeight="bold">Dr. Neeraj Kumar Sharma</Typography>
+                                        <Link className='listItem' fontWeight="bold" href="https://neerajww.github.io/">Neeraj Kumar Sharma</Link>
                                         <Box style={{ marginLeft: "20px" }}>
-                                            <Typography>Assistant Professor,</Typography>
-                                            <Typography>Mehta Family School of Data Science and Artificial Intelligence,</Typography>
-                                            <Typography>Indian Institute of Technology Guwahati</Typography>
+                                            <Typography>Faculty, IIT Guwahati</Typography>
+                                            {/* <Typography>Mehta Family School of DSAI,</Typography> */}
+                                            {/* <Typography>Indian Institute of Technology Guwahati</Typography> */}
                                             <Link href='mailto:neerajs@iitg.ac.in'>neerajs@iitg.ac.in</Link>
                                         </Box>
                                     </ListItem>
                                     <ListItem style={{ display: "block", marginTop: "20px" }}>
                                         <Typography className='listItem' fontWeight="bold">Saksham Kumar</Typography>
                                         <Box style={{ marginLeft: "20px" }}>
-                                            <Typography>Undergraduate Student,</Typography>
-                                            <Typography>Electronics and Communication Engineering,</Typography>
-                                            <Typography>Indian Institute of Technology Guwahati</Typography>
+                                            <Typography>Final year BTech, ECE</Typography>
+                                            {/* <Typography>Electronics and Communication Engineering,</Typography> */}
+                                            <Typography>IIT Guwahati</Typography>
                                             <Link href='mailto:k.saksham@iitg.ac.in'>k.saksham@iitg.ac.in</Link>
                                         </Box></ListItem>
                                     <ListItem style={{ display: "block", marginTop: "20px" }}>
                                         <Typography className='listItem' fontWeight="bold">Samarth Umapati Hegde</Typography>
                                         <Box style={{ marginLeft: "20px" }}>
-                                            <Typography>Undergraduate Student,</Typography>
-                                            <Typography>Electronics and Communication Engineering,</Typography>
-                                            <Typography>Indian Institute of Technology Guwahati</Typography>
+                                            <Typography>Final year BTech, ECE</Typography>
+                                            {/* <Typography>Electronics and Communication Engineering,</Typography> */}
+                                            <Typography>IIT Guwahati</Typography>
                                             <Link href='mailto:h.samarth@iitg.ac.in'>h.samarth@iitg.ac.in</Link>
                                         </Box></ListItem>
                                 </List>
+                                <hr />
                             </Box>
                         </Box>
                     </Box>

@@ -1,6 +1,6 @@
 import React from 'react'
-import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material'
-import { Radio, RadioGroup, FormControlLabel, FormLabel } from '@mui/material';
+import { Box, FormControl, InputLabel, Input, MenuItem, Select, Typography } from '@mui/material'
+
 import Recorder from './recorders/Recorder';
 
 
@@ -9,7 +9,10 @@ import Recorder from './recorders/Recorder';
 const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, languagesSpoken, statesVisited, states, controlledLanguageBlobs, setControlledLanguageBlobs, ownLanguageBlobs, setOwnLanguageBlobs }) => {
 
     const availableLanguages = languages.filter(la => !languagesSpoken.map(l => l.languageName).includes(la))
-    const availableStates = states.filter(st => statesVisited.map(s => s.stateName).includes(st))
+    // const availableStates = states.filter(st => statesVisited.map(s => (s.stateName)).includes(st))
+    const availableStates = statesVisited.map(s => (s.stateName !== "Other" ? s.stateName : s.otherState))
+    console.log(availableStates)
+
 
     const handleSelect = (e) => {
         e.preventDefault();
@@ -21,13 +24,13 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
         <div>
             <Box style={{
                 'paddingTop': "20px", 'marginBottom': '20px', 'backgroundColor': '#dedede',
-                'height': (index <= 2 && (l.proficiency === proficiencies[2] || l.proficiency === proficiencies[3]) ? '950px' : ((index > 2 || l.proficiency === proficiencies[0]) ? '300px' : '550px')),
+                'height': (index <= 2 && (l.proficiency === proficiencies[2] || l.proficiency === proficiencies[3]) && l.languageName !== "Other" ? '950px' : ((index > 2 || l.proficiency === proficiencies[0]) ? (l.languageName !== "Other" ? '300px' : "360px") : '550px')),
                 'borderRadius': '10px'
             }}
-                sx={{ ml: { xs: '25px', md: '100px', lg: '225px' }, width: { xs: '350px', md: '600px', lg: '800px' } }}>
+                sx={{ ml: { xs: '10px', md: '100px', lg: '225px' }, width: { xs: '350px', md: '600px', lg: '800px' } }}>
                 <Box>
                     <FormControl style={{ 'width': "225px", 'marginRight': '10px' }}>
-                        <Typography style={{ 'fontSize': '20px', 'fontWeight': '1000' }}>Language</Typography>
+                        <Typography style={{ 'fontSize': '16px', 'fontWeight': '1000' }}>I know the following language</Typography>
                         {/* <InputLabel>Language</InputLabel> */}
                         <Select
 
@@ -57,8 +60,15 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
                     </FormControl>
                 </Box>
                 <Box>
+                    <Input style={{ 'display': (l.languageName === "Other") ? "" : "none", 'marginTop': '15px', 'marginBottom': '15px' }} value={l.otherLanguage}
+                        // showButtons
+                        placeholder='language'
+                        classes={{ focused: 'custom-focused-input' }}
+                        onChange={(e) => { let data = [...languagesSpoken]; data[index].otherLanguage = e.target.value; setLanguagesSpoken(data); console.log(languagesSpoken) }} />
+                </Box>
+                <Box>
                     <FormControl style={{ 'width': "225px", 'marginRight': '10px' }}>
-                        <Typography style={{ 'fontSize': '20px', 'fontWeight': '1000' }}>Learned In State</Typography>
+                        <Typography style={{ 'fontSize': '16px', 'fontWeight': '1000' }}>I learnt this language in</Typography>
                         {/* <InputLabel>Learned In State</InputLabel> */}
                         <Select style={{
                             'backgroundColor': '#dedede',
@@ -75,9 +85,9 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
                                 let data = [...languagesSpoken];
                                 data[index].learnedInState = e.target.value; setLanguagesSpoken(data); console.log(languagesSpoken)
                             }}>
-                            {states.map(st => {
+                            {availableStates.map(st => {
 
-                                return <MenuItem style={{ display: availableStates.includes(st) ? "block" : "none" }} value={st}>{st}</MenuItem>
+                                return <MenuItem value={st}>{st}</MenuItem>
 
                             })}
                         </Select>
@@ -85,10 +95,10 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
                 </Box>
                 <Box>
                     <FormControl style={{ 'width': "225px" }}>
-                        <Typography style={{ 'fontSize': '20px', 'fontWeight': '1000' }}>Proficiency</Typography>
+                        <Typography style={{ 'fontSize': '16px', 'fontWeight': '1000' }}>My proficiency is</Typography>
                         {/* <InputLabel>Learned In State</InputLabel> */}
                         {/* <InputLabel>Proficiency</InputLabel> */}
-                        <Select style={{
+                        <Select disabled={l.languageName === ""} style={{
                             'backgroundColor': '#dedede',
                             'borderBottom': '2px solid black'
                         }}
@@ -170,7 +180,7 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
 
 
 
-                <Recorder language={l.languageName} learnedInState={l.learnedInState} index={index} proficiencies={proficiencies} proficiency={l.proficiency} controlledLanguageBlobs={controlledLanguageBlobs} setControlledLanguageBlobs={setControlledLanguageBlobs} ownLanguageBlobs={ownLanguageBlobs} setOwnLanguageBlobs={setOwnLanguageBlobs} />
+                <Recorder language={l.languageName} otherLanguage={l.otherLanguage} learnedInState={l.learnedInState} index={index} proficiencies={proficiencies} proficiency={l.proficiency} controlledLanguageBlobs={controlledLanguageBlobs} setControlledLanguageBlobs={setControlledLanguageBlobs} ownLanguageBlobs={ownLanguageBlobs} setOwnLanguageBlobs={setOwnLanguageBlobs} />
 
             </Box>
 

@@ -17,6 +17,8 @@ const Home = () => {
     // const [name, setName] = useState("");
     const [gender, setGender] = useState("female");
     const [age, setAge] = useState('');
+    const [iitg, setIitg] = useState('no');
+
     const [submitting, setSubmitting] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [agreed, setAgreed] = useState(false);
@@ -30,21 +32,21 @@ const Home = () => {
     // const [isAudio, setIsAudio] = useState(false);
     // const [isImage, setIsImage] = useState(false);
 
-    const [statesVisited, setStatesVisited] = useState([{ stateName: "", district: "", durationLived: '' }]);
-    const [languagesSpoken, setLanguagesSpoken] = useState([{ languageName: '', proficiency: '', mode: '', learnedInState: '' }]);
-    const [controlledLanguageBlobs, setControlledLanguageBlobs] = useState([]);
-    const [ownLanguageBlobs, setOwnLanguageBlobs] = useState([]);
+    const [statesVisited, setStatesVisited] = useState([{ stateName: '', otherState: "", district: "", durationLived: '' }]);
+    const [languagesSpoken, setLanguagesSpoken] = useState([{ languageName: '', otherLanguage: "", proficiency: '', mode: '', learnedInState: '' }]);
+    const [controlledLanguageBlobs, setControlledLanguageBlobs] = useState([null]);
+    const [ownLanguageBlobs, setOwnLanguageBlobs] = useState([null]);
     // const [imageBlobs, setImageBlobs] = useState([null, null, null]);
 
     const [step, setStep] = useState(0);
 
-    const states = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh',
-        'Jharkhand', 'Karnataka', 'Kerala', 'Madya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan',
-        'Sikkim', 'Tamil Nadu', 'Telagana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'];
+    const states = ['Andaman and Nicobar Island', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chandigarh', 'Chhattisgarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir',
+        'Jharkhand', 'Karnataka', 'Kerala', 'Ladakh', 'Lakshadweep', 'Madya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Puducherry', 'Punjab', 'Rajasthan',
+        'Sikkim', 'Tamil Nadu', 'Telagana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Other'];
 
     // const languages = ['Hindi', 'English', 'Tamil', 'Telugu', 'Kannada', 'Malayalam', 'Marathi', 'Gujarati', 'Bengali', 'Odia', 'Punjabi', 'Assamese', 'Kashmiri', 'Sindhi', 'Urdu', 'Konkani', 'Manipuri', 'Nepali', 'Bodo', 'Dogri', 'Maithili', 'Santali', 'Sanskrit', 'Urdu']
-    const languages = ['Assamese', 'Bengali', 'English', 'Gujarati', 'Hindi', 'Kannada', 'Malayalam', 'Marathi', 'Nepali', 'Odia', 'Punjabi', 'Sanskrit', 'Tamil', 'Telegu', 'Urdu']
-    const proficiencies = ["Cannot speak but understand only", "Can speak only", "Can speak and read only", "Can speak, read and write"]
+    const languages = ['Assamese', 'Bengali', 'English', 'Gujarati', 'Hindi', 'Kannada', 'Malayalam', 'Marathi', 'Nepali', 'Odia', 'Punjabi', 'Sanskrit', 'Tamil', 'Telugu', 'Urdu', 'Other']
+    const proficiencies = ["Cannot speak but understand", "Can speak", "Can speak and read", "Can speak, read and write"]
     // const images = ['Front', 'Left', 'Right'];
 
     // const submitImages = async () => {
@@ -94,7 +96,7 @@ const Home = () => {
                 // const file = new File([blob], submissionId + "OWN" + languagesSpoken[index].languageName);
                 // formData.append("file", file);
                 // const res = await postBlob(formData);
-                const blobName = submissionId + "OWN" + languagesSpoken[index].languageName;
+                const blobName = submissionId + "OWN" + (languagesSpoken[index].languageName !== "Other" ? languagesSpoken[index].languageName : languagesSpoken[index].otherLanguage);
                 const res = await postBlobAzure(blob, blobName);
                 return blobName;
             }
@@ -117,12 +119,13 @@ const Home = () => {
             submitOwnLanguageBlobs(submissionId).then((ownLanguageRes) => {
                 console.log("ownLangaugeRes", ownLanguageRes);
                 let statesVisitedData = statesVisited.map((s, index) => {
-                    return { stateName: s.stateName, district: s.district, durationLived: s.durationLived }
+                    return { stateName: s.stateName, otherState: s.otherState, district: s.district, durationLived: s.durationLived }
                 })
 
                 let languagesSpokenData = languagesSpoken.map((l, index) => {
                     return {
                         languageName: l.languageName,
+                        otherLanguage: l.otherLanguage,
                         proficiency: l.proficiency,
                         learnedInState: l.learnedInState,
                         // mode: l.mode,
@@ -143,6 +146,7 @@ const Home = () => {
                     // dateOfBirth: dob,
                     age: age,
                     gender: gender,
+                    iitg: iitg,
                     // images: imagesData,
                     states: statesVisitedData,
                     languages: languagesSpokenData,
@@ -215,7 +219,11 @@ const Home = () => {
 
 
     const statesNotValid = () => {
-        return (statesVisited.length === 0 || statesVisited.map(s => { return s.stateName }).includes("") || statesVisited.map(s => { return s.durationLived }).includes("") || statesVisited.map(s => { return s.district }).includes(""))
+        const otherStateMissingIndex = statesVisited.findIndex((s, index) => {
+            return (s.stateName === "Other" && s.otherState === "")
+        })
+
+        return (statesVisited.length === 0 || statesVisited.map(s => { return s.stateName }).includes("") || statesVisited.map(s => { return s.durationLived }).includes("") || otherStateMissingIndex !== -1)
     }
 
     const languagesNotValid = () => {
@@ -258,8 +266,8 @@ const Home = () => {
                         style={{ 'top': '0', 'right': '0' }}
                     >ABOUT US</Button> */}
 
-                    <Box sx={{ ml: { xs: '60px', md: '250px', lg: '475px' }, mt: '10px', display: 'flex' }} >
-                        <Typography variant='h2' style={{ 'textAlign': 'left', 'fontWeight': '600', 'fontFamily': "'Quicksand', sans-serif" }} sx={{ fontSize: { xs: "25px", md: "28px", lg: '30px' } }}>Data Collection Platform</Typography>
+                    <Box sx={{ ml: { xs: '30px', md: '250px', lg: '550px' }, mt: '10px', display: 'flex' }} >
+                        <Typography variant='h2' style={{ 'textAlign': 'left', 'fontWeight': '600', 'fontFamily': "'Quicksand', sans-serif" }} sx={{ fontSize: { xs: "25px", md: "28px", lg: '30px' }, mr: { xs: "155px", md: "100px", lg: '50px' } }}>Project Lehja</Typography>
                         <Box sx={{ display: { xs: 'none', md: 'block', lg: 'block' } }}>
                             <Button sx={{ ml: { md: '150px', lg: '200px' }, mb: "20px", color: "black" }} onClick={(() => { navigate("/about") })}>About</Button>
                             <Button sx={{ mb: "20px", color: "black" }} onClick={(() => { navigate("/people") })}>People</Button>
@@ -280,7 +288,7 @@ const Home = () => {
                         </Box>
                     </Box>
 
-                    <Box >
+                    <Box sx={{ ml: { xs: "10px" } }}>
                         <AppBar position="static" style={{ boxShadow: 'none', backgroundColor: "white" }}>
                             <ul id="nav-list">
                                 <li onClick={() => { setStep(0) }}
@@ -288,7 +296,7 @@ const Home = () => {
                                 <li onClick={() => { if (agreed) setStep(1) }}
                                     style={step === 1 ? { 'textDecoration': 'underline', 'color': 'black', 'textDecorationColor': 'black', 'fontWeight': '600' } : { 'listStyleType': 'none', 'padding': '20px', 'borderRadius': '10px', 'transition': 'background 1s', 'color': 'grey', 'fontWeight': '500', 'fontSize': '20px' }}>Metadata</li>
                                 <li onClick={() => { if (step == 3 || age !== "") setStep(2) }}
-                                    style={step === 2 ? { 'textDecoration': 'underline', 'color': 'black', 'textDecorationColor': 'black', 'fontWeight': '600' } : { 'listStyleType': 'none', 'padding': '20px', 'borderRadius': '10px', 'transition': 'background 1s', 'color': 'grey', 'fontWeight': '500', 'fontSize': '20px' }}>Domiciles</li>
+                                    style={step === 2 ? { 'textDecoration': 'underline', 'color': 'black', 'textDecorationColor': 'black', 'fontWeight': '600' } : { 'listStyleType': 'none', 'padding': '20px', 'borderRadius': '10px', 'transition': 'background 1s', 'color': 'grey', 'fontWeight': '500', 'fontSize': '20px' }}>Residences</li>
                                 <li onClick={() => { if (!statesNotValid() && age !== "") setStep(3) }}
                                     style={step === 3 ? { 'textDecoration': 'underline', 'color': 'black', 'textDecorationColor': 'black', 'fontWeight': '600' } : { 'listStyleType': 'none', 'padding': '20px', 'borderRadius': '10px', 'transition': 'background 1s', 'color': 'grey', 'fontWeight': '500', 'fontSize': '20px' }}>Languages</li>
                             </ul>
@@ -310,10 +318,41 @@ const Home = () => {
                     step === 1 ?
                         <Box style={{ 'marginBottom': '10px' }}>
                             <Box style={{ 'backgroundColor': '#dedede', 'borderRadius': '10px', 'paddingBottom': '10px', 'paddingTop': '10px' }}
-                                sx={{ ml: { xs: '25px', md: '400px', lg: '400px' }, mt: { xs: '10px', md: '50px', lg: '80px' }, width: { xs: '350px', md: '375px', lg: '500px' }, height: { xs: '300px', md: '200px', lg: '200px' } }}>
+                                sx={{ ml: { xs: '25px', md: '400px', lg: '400px' }, mt: { xs: '10px', md: '50px', lg: '80px' }, width: { xs: '350px', md: '375px', lg: '500px' }, height: { xs: '425px', md: '275px', lg: '250px' } }}>
+                                <Box style={{ "margin": "10px" }}>
+                                    <FormControl >
+                                        <FormLabel id="demo-radio-buttons-group-label" style={{ 'color': 'black', 'fontSize': '16px', 'fontWeight': '1000', }}>I stay in IIT Guwahati</FormLabel>
+                                        <RadioGroup
+                                            aria-labelledby="demo-radio-buttons-group-label"
+                                            defaultValue="no"
+                                            name="radio-buttons-group"
+                                            style={{ 'display': 'flex' }}
+                                            sx={{ flexDirection: { xs: 'column', md: 'row', lg: 'row' } }}
+
+
+                                            onChange={(e) => { setIitg(e.target.value) }}>
+                                            <FormControlLabel value="yes" control={<Radio sx={{
+
+                                                '&.Mui-checked': {
+                                                    color: 'black',
+
+                                                },
+
+                                            }} />} label="Yes" />
+                                            <FormControlLabel value="no" control={<Radio sx={{
+
+                                                '&.Mui-checked': {
+                                                    color: 'black',
+                                                }
+                                            }} />} label="No" style={{ 'color': 'black' }} />
+
+                                        </RadioGroup>
+                                    </FormControl>
+                                </Box>
+
                                 <Box>
                                     <FormControl >
-                                        <FormLabel id="demo-radio-buttons-group-label" style={{ 'color': 'black', 'fontSize': '20px', 'fontWeight': '1000', }}>Gender</FormLabel>
+                                        <FormLabel id="demo-radio-buttons-group-label" style={{ 'color': 'black', 'fontSize': '16px', 'fontWeight': '1000', }}>Gender</FormLabel>
                                         <RadioGroup
                                             aria-labelledby="demo-radio-buttons-group-label"
                                             defaultValue="female"
@@ -327,7 +366,9 @@ const Home = () => {
 
                                                 '&.Mui-checked': {
                                                     color: 'black',
-                                                }
+
+                                                },
+
                                             }} />} label="Female" />
                                             <FormControlLabel value="male" control={<Radio sx={{
 
@@ -353,7 +394,7 @@ const Home = () => {
 
 
                                 <Box >
-                                    <Typography style={{ 'paddingTop': '20px', 'color': 'black', 'fontSize': '20px', 'fontWeight': '1000' }}>Age<Typography syle={{ 'fontWeight': '300' }}></Typography></Typography>
+                                    <Typography style={{ 'paddingTop': '20px', 'color': 'black', 'fontSize': '16px', 'fontWeight': '1000' }}>Age<Typography syle={{ 'fontWeight': '300' }}></Typography></Typography>
 
                                     <Input type='number' min={1} value={age}
                                         placeholder='in years'
@@ -407,7 +448,7 @@ const Home = () => {
 
                                     <Button variant="contained" color="error"
 
-                                        style={{ marginLeft: "10px", marginBottom: "330px" }}
+                                        style={{ marginLeft: "10px", marginBottom: s.stateName !== "Other" ? "200px" : "250px" }}
                                         onClick={() => { const newStatesVisited = [...statesVisited]; console.log(index); newStatesVisited.splice(index, 1); setStatesVisited(newStatesVisited); }}
                                         disabled={statesVisited.length <= 1 ? true : false}
                                     > Delete</Button>
@@ -415,12 +456,12 @@ const Home = () => {
                                 </Box>)
                                 )}
                             </Box>
-                            <Box style={{ 'paddingTop': '10px' }} sx={{ ml: { xs: '0px', lg: '150px' }, mr: { xs: '250px', lg: '0px' } }}>
+                            <Box style={{ 'paddingTop': '10px' }} sx={{ ml: { xs: '0px', lg: '150px' }, mr: { xs: '280px', lg: '0px' } }}>
                                 <Button variant="contained" color="primary" style={{ 'backgroundColor': 'black', 'color': 'white' }}
                                     sx={{ mr: { xs: '20px', md: '10px', lg: '70px' } }}
                                     onClick={prevStep}> Previous</Button>
                                 <Button variant="contained" color="primary" disabled={statesNotValid() ? true : false}
-                                    onClick={() => setStatesVisited([...statesVisited, { stateName: "", district: "", durationLived: '' }])}
+                                    onClick={() => setStatesVisited([...statesVisited, { stateName: "", district: "", durationLived: '', otherState: '' }])}
                                     style={{ 'backgroundColor': statesNotValid() ? '#dedede' : 'black' }}>
                                     Add State</Button>
                                 <Button variant="contained" color="primary" style={{ 'backgroundColor': statesNotValid() ? '#dedede' : 'black', 'color': 'white' }}
@@ -458,7 +499,10 @@ const Home = () => {
                                     <Box style={{ display: "flex" }}>
                                         <Language l={l} index={index} proficiencies={proficiencies} languages={languages} setLanguagesSpoken={setLanguagesSpoken} languagesSpoken={languagesSpoken} statesVisited={statesVisited} states={states} controlledLanguageBlobs={controlledLanguageBlobs} setControlledLanguageBlobs={setControlledLanguageBlobs} ownLanguageBlobs={ownLanguageBlobs} setOwnLanguageBlobs={setOwnLanguageBlobs} />
                                         <Button variant="contained" color="error"
-                                            style={{ marginLeft: "10px", marginBottom: "1030px" }}
+                                            style={{
+                                                marginLeft: "10px",
+                                                marginBottom: (index <= 2 && (l.proficiency === proficiencies[2] || l.proficiency === proficiencies[3]) && l.languageName !== "Other" ? '950px' : ((index > 2 || l.proficiency === proficiencies[0]) ? (l.languageName !== "Other" ? '300px' : "360px") : '550px'))
+                                            }}
                                             onClick={() => {
                                                 const newLanguagesSpoken = [...languagesSpoken];
                                                 newLanguagesSpoken.splice(index, 1);
@@ -479,7 +523,7 @@ const Home = () => {
                             </Box>
 
                             <Box style={{ 'paddingTop': '20px', 'paddingBottom': '10px' }}
-                                sx={{ pl: { xs: '0px', lg: '100px' }, pr: { xs: '205px', lg: '0px' } }}>
+                                sx={{ pl: { xs: '0px', lg: '100px' }, pr: { xs: '225px', lg: '0px' } }}>
 
                                 <Button variant="contained" color="primary" onClick={prevStep}
                                     style={{ 'backgroundColor': 'black', 'color': 'white' }}
@@ -488,7 +532,7 @@ const Home = () => {
                                 <Button variant="contained" color="primary"
                                     disabled={languagesNotValid() ? true : false}
                                     style={{ 'backgroundColor': languagesNotValid() ? '#dedede' : 'black' }}
-                                    onClick={() => { setLanguagesSpoken([...languagesSpoken, { languageName: '', proficiency: '', mode: '', learnedInState: '' }]); setControlledLanguageBlobs([...controlledLanguageBlobs, null]); setOwnLanguageBlobs([...ownLanguageBlobs, null]); }}>
+                                    onClick={() => { setLanguagesSpoken([...languagesSpoken, { languageName: '', otherLanguage: "", proficiency: '', mode: '', learnedInState: '' }]); setControlledLanguageBlobs([...controlledLanguageBlobs, null]); setOwnLanguageBlobs([...ownLanguageBlobs, null]); }}>
                                     Add Language
                                 </Button>
                                 <Button variant="contained" color="primary" onClick={() => { setSubmitting(true); submitData(); }} style={{ 'backgroundColor': languagesNotValid() ? '#dedede' : 'black', 'color': 'white' }}
