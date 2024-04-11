@@ -6,7 +6,7 @@ const mimeType = "audio/wav";
 
 const AudioRecorder = ({
     // setAudioBlob, setIsAudio
-    index, languageBlobs, setLanguageBlobs
+    index, language, languageBlobs, setLanguageBlobs
 }) => {
     const [audioBlob, setAudioBlob] = useState(null);
     const [isAudio, setIsAudio] = useState(false);
@@ -51,6 +51,9 @@ const AudioRecorder = ({
         setCount(0);
     };
 
+    // useEffect(() => {
+
+    // },[language])
 
 
 

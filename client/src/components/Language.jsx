@@ -28,7 +28,7 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
                 'borderRadius': '10px'
             }}
                 sx={{ ml: { xs: '10px', md: '100px', lg: '225px' }, width: { xs: '350px', md: '600px', lg: '800px' } }}>
-                <Box>
+                <Box style={{ "marginBottom": "10px" }}>
                     <FormControl style={{ 'width': "225px", 'marginRight': '10px' }}>
                         <Typography style={{ 'fontSize': '16px', 'fontWeight': '1000' }}>I know the following language</Typography>
                         {/* <InputLabel>Language</InputLabel> */}
@@ -59,14 +59,14 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
                         </Select>
                     </FormControl>
                 </Box>
-                <Box>
-                    <Input style={{ 'display': (l.languageName === "Other") ? "" : "none", 'marginTop': '15px', 'marginBottom': '15px' }} value={l.otherLanguage}
+                <Box style={{ "marginBottom": "20px" }}>
+                    <Input style={{ 'display': (l.languageName === "Other") ? "" : "none" }} value={l.otherLanguage}
                         // showButtons
                         placeholder='language'
                         classes={{ focused: 'custom-focused-input' }}
                         onChange={(e) => { let data = [...languagesSpoken]; data[index].otherLanguage = e.target.value; setLanguagesSpoken(data); console.log(languagesSpoken) }} />
                 </Box>
-                <Box>
+                <Box style={{ "marginBottom": "10px" }}>
                     <FormControl style={{ 'width': "225px", 'marginRight': '10px' }}>
                         <Typography style={{ 'fontSize': '16px', 'fontWeight': '1000' }}>I learnt this language in</Typography>
                         {/* <InputLabel>Learned In State</InputLabel> */}
@@ -93,7 +93,7 @@ const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, lang
                         </Select>
                     </FormControl>
                 </Box>
-                <Box>
+                <Box style={{ "marginBottom": "10px" }}>
                     <FormControl style={{ 'width': "225px" }}>
                         <Typography style={{ 'fontSize': '16px', 'fontWeight': '1000' }}>My proficiency is</Typography>
                         {/* <InputLabel>Learned In State</InputLabel> */}
