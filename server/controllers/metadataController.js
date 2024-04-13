@@ -8,6 +8,8 @@ export const postMetadata = async (req, res) => {
     const newMetadata = new Metadata(metadata);
 
     try {
+        // add createdAt field to the metadata
+        newMetadata.createdAt = new Date();
         await newMetadata.save();
         // newPost is returned as response if the save is successfull
         return res.status(201).json(newMetadata);

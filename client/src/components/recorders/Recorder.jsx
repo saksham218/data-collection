@@ -15,7 +15,7 @@ const Recorder = ({ language, otherLanguage, learnedInState, index, proficiencie
             {(index <= 2 && (proficiency === proficiencies[2] || proficiency === proficiencies[3]) && language !== "Other") ? (
                 <Box style={{ 'paddingTop': '10px', "marginBottom": "10px" }}>
                     <Typography style={{ 'fontSize': '16px', 'fontWeight': '1000' }}>Record audio while reading the following text</Typography>
-                    <Typography style={{ 'fontSize': '12px', 'fontWeight': '500', "marginBottom": "15px" }}>(Make sure you are in a quiet environment and keep the recording device within 15 cm from your mouth.)</Typography>
+                    <Typography style={{ 'fontSize': '12px', 'fontWeight': '500', "marginBottom": "15px" }}>(Make sure you are in a quiet environment and keep the recording device within 15 cm.)</Typography>
 
 
                     {/* import english image from images folder*/}

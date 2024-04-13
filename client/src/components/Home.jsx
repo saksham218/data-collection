@@ -41,7 +41,7 @@ const Home = () => {
     const [step, setStep] = useState(0);
 
     const states = ['Andaman and Nicobar Island', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chandigarh', 'Chhattisgarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir',
-        'Jharkhand', 'Karnataka', 'Kerala', 'Ladakh', 'Lakshadweep', 'Madya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Puducherry', 'Punjab', 'Rajasthan',
+        'Jharkhand', 'Karnataka', 'Kerala', 'Ladakh', 'Lakshadweep', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Puducherry', 'Punjab', 'Rajasthan',
         'Sikkim', 'Tamil Nadu', 'Telagana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Other'];
 
     // const languages = ['Hindi', 'English', 'Tamil', 'Telugu', 'Kannada', 'Malayalam', 'Marathi', 'Gujarati', 'Bengali', 'Odia', 'Punjabi', 'Assamese', 'Kashmiri', 'Sindhi', 'Urdu', 'Konkani', 'Manipuri', 'Nepali', 'Bodo', 'Dogri', 'Maithili', 'Santali', 'Sanskrit', 'Urdu']
@@ -231,7 +231,8 @@ const Home = () => {
         const audioMissingIndex = languagesSpoken.findIndex((l, index) => {
             return (index <= 2 && (
                 (l.proficiency === proficiencies[1] && ownLanguageBlobs[index] === null) ||
-                ((l.proficiency === proficiencies[2] || l.proficiency === proficiencies[3]) && (controlledLanguageBlobs[index] === null || ownLanguageBlobs[index] === null))
+                (l.languageName === "Other" && l.proficiency !== proficiencies[0] && ownLanguageBlobs[index] === null) ||
+                ((l.proficiency === proficiencies[2] || l.proficiency === proficiencies[3]) && l.languageName !== "Other" && (controlledLanguageBlobs[index] === null || ownLanguageBlobs[index] === null))
             ))
         })
 
