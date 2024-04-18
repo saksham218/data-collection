@@ -20,9 +20,23 @@ export const postMetadata = async (req, res) => {
 
 export const getAllMetadata = async (req, res) => {
     try {
-        const allMetadata = await Metadata.find();
+        const fromDate = new Date("2024-04-11");
+        const query = { createdAt: { $gte: fromDate } };
+        const allMetadata = await Metadata.find(query);
         return res.status(200).json(allMetadata);
     } catch (error) {
+        return res.status(404).json({ message: error.message });
+    }
+}
+
+export const getNumberOfSubmissions = async (req, res) => {
+    try {
+        const fromDate = new Date("2024-04-11");
+        const query = { createdAt: { $gte: fromDate } };
+        const numberOfSubmissions = await Metadata.countDocuments(query);
+        return res.status(200).json(numberOfSubmissions);
+    }
+    catch (error) {
         return res.status(404).json({ message: error.message });
     }
 }

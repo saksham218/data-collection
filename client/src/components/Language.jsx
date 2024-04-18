@@ -8,7 +8,7 @@ import Recorder from './recorders/Recorder';
 
 const Language = ({ l, index, proficiencies, languages, setLanguagesSpoken, languagesSpoken, statesVisited, states, controlledLanguageBlobs, setControlledLanguageBlobs, ownLanguageBlobs, setOwnLanguageBlobs }) => {
 
-    const availableLanguages = languages.filter(la => !languagesSpoken.map(l => l.languageName).includes(la))
+    const availableLanguages = languages.filter(la => (la === "Other" || !languagesSpoken.map(l => l.languageName).includes(la)))
     // const availableStates = states.filter(st => statesVisited.map(s => (s.stateName)).includes(st))
     const availableStates = statesVisited.map(s => (s.stateName !== "Other" ? s.stateName : s.otherState))
     console.log(availableStates)

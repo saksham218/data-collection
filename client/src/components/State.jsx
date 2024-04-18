@@ -7,7 +7,7 @@ import './State.css'
 
 const State = ({ s, index, states, setStatesVisited, statesVisited }) => {
 
-    const availableStates = states.filter(st => !statesVisited.map(s => s.stateName).includes(st))
+    const availableStates = states.filter(st => (st === "Other" || !statesVisited.map(s => s.stateName).includes(st)))
 
 
     return (
