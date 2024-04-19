@@ -25,11 +25,13 @@ const metadataSchema = mongoose.Schema({
     // },
     states: [{
         stateName: String,
+        otherState: String,
         district: String,
         durationLived: Number
     }],
     languages: [{
         languageName: String,
+        otherLanguage: String,
         proficiency: String,
         learnedInState: String,
         // mode: String,
